@@ -1,22 +1,22 @@
 package robot.sensors;
 
 import lejos.hardware.ev3.LocalEV3;
-import lejos.hardware.sensor.EV3UltrasonicSensor;
+import lejos.hardware.sensor.EV3TouchSensor;
 import lejos.robotics.SampleProvider;
 
-public class UltrasonicSensor implements Sensor{
-	private EV3UltrasonicSensor sensor;
+public class TouchSensor implements Sensor{
+	private EV3TouchSensor sensor;
 	private SampleProvider sampler;
 	private static float[] sample;
 
-	public UltrasonicSensor(String string) {
-		setPort(string);
+	public TouchSensor(String s){
+		setPort(s);
 	}
-
+	
 	@Override
 	public void setPort(String port){
-		sensor = new EV3UltrasonicSensor(LocalEV3.get().getPort(port));
-		sampler = sensor.getDistanceMode();
+		sensor = new EV3TouchSensor(LocalEV3.get().getPort(port));
+		sampler = sensor.getTouchMode();
 		sample = new float[1];
 	}
 	
