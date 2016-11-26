@@ -3,6 +3,7 @@ import lejos.hardware.lcd.LCD;
 import lejos.utility.Delay;
 import lejos.utility.TextMenu;
 import robot.Robot;
+import robot.actuators.Motor;
 import robot.actuators.Sound;
 import robot.brick.Battery;
 import robot.sensors.ColorReflectSensor;
@@ -14,17 +15,26 @@ import robot.sensors.UltrasonicSensor;
 
 public class Main {
 	public static void main(String... args){
+		/*
+		Motor distr = new Motor("C");
 
-		/*Robot robot = new Robot();
-
-		
-		robot.setMotorLeft("A");
-		robot.setMotorRight("B");
-
-		robot.followLine(700, 0, 0);
+		distr.reset();
+		for (int i = 0; i <= 5; i++){
+			distr.moveDegree(360, 720);
+			Delay.msDelay(3000);
+		}
 		*/
 
-		LCD.clear();
+		Robot robot = new Robot();
+
+
+		robot.setMotorLeft("B");
+		robot.setMotorRight("A");
+
+		robot.followLine(700, 0, 0);
+		
+
+		/*LCD.clear();
 		String[] menu = new String[]{"Gyro", "drift", "noir et blanc", "couleur", "distance", "pression"};
 
 		TextMenu m = new TextMenu(menu);
@@ -58,9 +68,9 @@ public class Main {
 
 		LogHandler l = new LogHandler(menu[index]+".txt", sensor);
 
-		
+
 		System.out.println("starting");
-		
+
 		while(true){
 			long time = 0;
 			if(menu[index].equals("Gyro")){
@@ -68,7 +78,7 @@ public class Main {
 				sensor.reset();
 				time = System.currentTimeMillis();
 			}
-			
+
 			if(menu[index].equals("drift")){
 
 				sensor.reset();
@@ -78,13 +88,13 @@ public class Main {
 				l.write();
 				l.write("The end");
 				Sound.beep(2, 10);
-				
+
 			} else {
 				Button.ENTER.waitForPress();
 
 				if(menu[index].equals("Gyro")){
 
-				
+
 			}
 				else{
 					l.write();		
@@ -92,6 +102,6 @@ public class Main {
 			}
 			l.write("Battery Voltage: " + Battery.getVoltage());
 		}
-
+		 */
 	}
 }

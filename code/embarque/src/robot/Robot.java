@@ -30,15 +30,15 @@ public class Robot {
 		motorR = new Motor(port);
 	}
 	
-	final int MIN_SPEED = 0;
-	final int VSIZE = 4;
+	final int MIN_SPEED = 25;
+	final int VSIZE = 10;
 	final int BLACK = 10;
-	final int WHITE = 140;
-	final int SMOOTH = 20;
+	final int WHITE = 255;
+	final double SMOOTH = 1.07;
 	
-	final double KP = 0.002;
-	final double KI = 0.; // Laisser 0, ça pue la mort sinon
-	final double KD = 1.;
+	final double KP = 0.08;
+	final double KI = 0.03;
+	final double KD = 8;
 	
 	public void followLine(int basespeed, int end_color, int duration){
 		
@@ -55,7 +55,7 @@ public class Robot {
 		double derivative = 0;
 		
 		int virage = 0;
-		int speed = 0;
+		int speed = MIN_SPEED;
 		
 		gyroscope.reset();
 		
@@ -82,11 +82,16 @@ public class Robot {
 			
 			derivative = (error - prior_error);
 			
-			double prop = KP * Math.abs(integral) * error + KI * integral + KD * derivative;
+			double prop = KP * error + KI * integral + KD * derivative;
 			
 			prior_error = error;			
 			
-			speed = ((SMOOTH-1) * speed ) / SMOOTH + Math.max((int) (basespeed - (Math.abs(integral)/ERROR_MAX * basespeed) ) / SMOOTH, MIN_SPEED);
+			int yolo = (int)( basespeed - Math.abs(integral * basespeed / ERROR_MAX) );
+			
+			yolo = Math.max(yolo, Math.max((int)(speed/SMOOTH), MIN_SPEED));
+			
+			speed = Math.min( yolo, (int)(SMOOTH*speed));
+			
 			
 			motorL.setSpeed((int) (speed - prop));
 			motorR.setSpeed((int) (speed + prop));

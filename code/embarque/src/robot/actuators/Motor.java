@@ -44,4 +44,18 @@ public class Motor {
 		}
 		motor.setSpeed(speed);
 	}
+	
+	public void moveDegree(int position, int speed){
+		
+		/*while ( motor.getTachoCount() % position > 10){
+			if (motor.getTachoCount() % position > position / 2)
+				setSpeed(50);
+			else
+				setSpeed(speed);
+		}
+		setSpeed(0);*/
+		
+		motor.setSpeed(speed);
+		motor.rotate(position);
+	}
 }
