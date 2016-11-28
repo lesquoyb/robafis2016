@@ -30,8 +30,9 @@ public class Main {
 
 		robot.setMotorLeft("B");
 		robot.setMotorRight("A");
-
-		robot.followLine(700, 0, 0);
+		robot.listenMode();
+		
+		//robot.followLine(700, 0, 0);
 		
 
 		/*LCD.clear();

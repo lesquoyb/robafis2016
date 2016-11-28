@@ -2,8 +2,11 @@ package robot;
 
 import java.util.Vector;
 
+import lejos.hardware.Sound;
+import lejos.hardware.lcd.LCD;
 import lejos.utility.Delay;
 import robot.actuators.Motor;
+import robot.communication.BluetoothServer;
 import robot.sensors.ColorReflectSensor;
 import robot.sensors.Gyroscope;
 import robot.sensors.UltrasonicSensor;
@@ -14,12 +17,24 @@ public class Robot {
 	Gyroscope gyroscope;
 	UltrasonicSensor distanceSensor;
 	
-	Motor motorL;
-	Motor motorR;
+	public Motor motorL;
+	public Motor motorR;
+	public Motor distr;
+	
+	BluetoothServer btServer;
 	
 	public Robot(){
 		colorSensor = new ColorReflectSensor("S1");
 		gyroscope = new Gyroscope("S2");
+		distr = new Motor("C");
+		btServer = new BluetoothServer(this);
+	}
+	
+	public void error(String message){
+		LCD.clear();
+		LCD.drawString(message, 0, 0);
+		Sound.buzz();
+		Sound.buzz();
 	}
 	
 	public void setMotorLeft(String port) {
@@ -28,6 +43,15 @@ public class Robot {
 	
 	public void setMotorRight(String port) {
 		motorR = new Motor(port);
+	}
+	
+	public void listenMode(){
+		btServer.listen();
+	}
+	
+	public void distribute(){
+		distr.reset();
+		distr.moveDegree(360, 720);
 	}
 	
 	final int MIN_SPEED = 25;
@@ -40,9 +64,9 @@ public class Robot {
 	final double KI = 0.03;
 	final double KD = 8;
 	
-	public void followLine(int basespeed, int end_color, int duration){
+	public void followLine(int basespeed){
 		
-		
+		Sound.beep();
 		Vector<Double> vInteg = new Vector<Double>(VSIZE);
 		final double objective = (BLACK + WHITE )/2;
 		final int ERROR_MAX = (int)((objective- BLACK)*VSIZE);

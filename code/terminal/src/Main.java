@@ -7,5 +7,7 @@ public class Main {
 		Terminal terminal = new Terminal();
 		
 		new Frame(terminal);
+		
+		terminal.listenPad();
 	}	
 }

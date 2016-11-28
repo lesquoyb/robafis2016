@@ -7,34 +7,34 @@ import manette.Movement;
 
 public class Robot extends Observable {
 	String ip = "10.0.1.1";
-	boolean connected = false;
+	boolean btConnected;
 	
 	BluetoothManager b = new BluetoothManager();
 	
 	public Robot() {
-		reconnect();
+		btConnected = false;
 	}
 
 	public void doMovement(Movement movement) {
-		if (connected)
+		if (btConnected)
 			b.sendMovement(movement);
 	}
 	
-	public void reconnect(){
-		connected = b.connect(ip);
+	public void reconnectBT(){
+		btConnected = b.connect(ip);
 		setChanged();
 		notifyObservers();
 	}
 	
-	public boolean isConnected(){
-		return connected;
+	public boolean isConnectedToBT(){
+		return btConnected;
 	}
 	
-	public String getIP(){
+	public String getIPBT(){
 		return ip;
 	}
 	
-	public void setIP(String newIP){
+	public void setIPBT(String newIP){
 		ip = newIP;
 	}
 	

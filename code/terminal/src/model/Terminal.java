@@ -3,14 +3,17 @@ package model;
 public class Terminal {
 	Camera camera;
 	Robot robot;
-	Manette manette;
+	public Manette manette;
 	
 	public Terminal() {
 		camera = new Camera();
 		robot = new Robot();
-		//manette = new Manette(robot);
+		manette = new Manette(robot);
 	}
 	
+	public void listenPad(){
+		manette.listen();
+	}
 	public Camera getCamera(){
 		return camera;
 	}

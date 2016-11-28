@@ -1,61 +1,55 @@
 package model;
 
-import javax.swing.JOptionPane;
-
 import ch.aplu.xboxcontroller.XboxController;
+import gui.statusPanel.ManettePan;
 import manette.XBoxCtrlListener;
 
-public class Manette implements Runnable{
+public class Manette{
 
 	Robot robot;
-	XboxController xc = new XboxController();
+	public XboxController xc;
+	XBoxCtrlListener bbox;
+	ManettePan view;
 	
 	public Manette(Robot bot) {
-
+		 xc = new XboxController();
 		this.robot = bot;
-		//Thread t = new Thread(this);
-		//t.start();
 	}
 
-	@Override
-	public void run() {
-		//Set DeadZone
+	public void initPad(){
 		xc.setLeftThumbDeadZone(0.2);
+		bbox = new XBoxCtrlListener();		
+		xc.addXboxControllerListener(bbox);	
+		view.refreshView();
+	}
+	
+	public void setView(ManettePan v){
+		view = v;
+	}
+	public void listen() {
 
-		//If no controllers are detected
-		if (!xc.isConnected())
-		{
-			JOptionPane.showMessageDialog(null, 
-					"Xbox controller not connected.",
-					"Error", 
-					JOptionPane.ERROR_MESSAGE);
-
-
-			xc.release();
-			return;
-		}
-
-		XBoxCtrlListener bbox = new XBoxCtrlListener();		
-		//add listener to XboxController
-		xc.addXboxControllerListener(bbox);
-
-		while(true)
-		{
-			//calcul des valeurs pour chaque roue
-			bbox.movement.calculateWheelsSpeed();
-
-			//System.out.println("L : " + bbox.movement.leftWheel + " R: " + bbox.movement.rightWheel	);
-
-			//envoi
-			robot.doMovement( bbox.movement );
+		initPad();
+		
+		while(true){
+			
+			if(xc.isConnected()){
+				bbox.movement.calculateWheelsSpeed();
+			//	System.out.println("L : " + bbox.movement.leftWheel + " R: " + bbox.movement.rightWheel	);
+				robot.doMovement( bbox.movement);
+				
+			}			
+			view.refreshView();
+			
 
 			try {
 				Thread.sleep(100);
-			} catch (InterruptedException e) {
-				// TODO Auto-generated catch block
-				e.printStackTrace();
-			}
+			} 
+			catch (InterruptedException e) {e.printStackTrace();}
 		}
+
+
+
+
 
 	}
 }

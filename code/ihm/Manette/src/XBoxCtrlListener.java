@@ -1,4 +1,4 @@
-package manette;
+
 
 import ch.aplu.xboxcontroller.XboxControllerListener;
 
@@ -15,18 +15,16 @@ public class XBoxCtrlListener implements XboxControllerListener{
 	
 	@Override
 	public void isConnected(boolean connected) {
-		this.connected = connected;	//ne pas toucher ï¿½ celle lï¿½
+		this.connected = connected;	//ne pas toucher à celle là
 	}
 
 	@Override
 	public void buttonA(boolean pressed) {
 		movement.boutonA = pressed;
-		
 	}
 
 	@Override
 	public void buttonB(boolean pressed) {
-		
 	}
 
 	@Override
@@ -46,66 +44,60 @@ public class XBoxCtrlListener implements XboxControllerListener{
 
 	@Override
 	public void start(boolean pressed) {
-		movement.boutonStart = pressed;
+	
 	}
 
 	@Override
 	public void leftShoulder(boolean pressed) {
 		movement.rotateLeft = pressed;
-		
 	}
 
 	@Override
 	public void rightShoulder(boolean pressed) {
 		movement.rotateRight = pressed;
-		
 	}
 
 	@Override
 	public void leftThumb(boolean pressed) {
-		
+
 	}
 
 	@Override
 	public void rightThumb(boolean pressed) {
-
-		
 	}
 
 	@Override
 	public void dpad(int direction, boolean pressed) {
 		
-		
 	}
 
 	@Override
 	public void leftTrigger(double value) {
-		//On se servira de ca pour faire marche arriï¿½re (ou freiner?)
+		//On se servira de ca pour faire marche arrière (ou freiner?)
 		movement.reverse = value;
-		
 	}
 
 	@Override
 	public void rightTrigger(double value) {
-		//gachette droite pour l'accï¿½lï¿½ration
+		//gachette droite pour l'accélération
 		movement.speed = value;
 	}
 
 	@Override
 	public void leftThumbMagnitude(double magnitude) {
-		//cordonnï¿½es polaire : longueur
+		//cordonnées polaire : longueur
 		movement.magnitude = magnitude;
-
 	}
 
 	@Override
 	public void leftThumbDirection(double direction) {
-		//cordonnï¿½es polaire : angle
+		//cordonnées polaire : angle
 		movement.direction = direction;
 	}
 
 	@Override
 	public void rightThumbMagnitude(double magnitude) {
+		
 	}
 
 	@Override

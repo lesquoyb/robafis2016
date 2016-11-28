@@ -4,6 +4,7 @@ import java.awt.BorderLayout;
 
 import javax.swing.JFrame;
 
+import gui.statusPanel.StatusPanel;
 import model.Terminal;
 
 @SuppressWarnings("serial")

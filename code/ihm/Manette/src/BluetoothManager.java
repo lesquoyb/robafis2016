@@ -1,5 +1,3 @@
-package manette;
-
 import java.io.BufferedReader;
 import java.io.IOException;
 import java.io.InputStreamReader;
@@ -23,26 +21,28 @@ public class BluetoothManager {
 	{
 		try {
 			socket = new Socket(ip, PORT);
+
 		} catch (Exception e) {
 			return false;
 		}
 		return true;
 	}
-	
-	public boolean stillAlive(){
-		return !(socket.isInputShutdown() && socket.isOutputShutdown());
-	}
 
 
-	Movement last;
-	public void sendMovement(Movement m) {
-		if (socket != null && socket.isConnected() && !socket.isClosed() && ! last.equals(m)) {
+	public void sendMovement(Movement m) 
+	{
+		if (socket != null && socket.isConnected() && !socket.isClosed()) {
 			try {
-				
-				socket.getOutputStream().write(m.toString().getBytes());
-				last = m;
-				
-			} catch (Exception e) {System.out.println("erreur d'envoi bluetooth: " + e.getMessage());}
+
+				String toSend = "" + (int)(m.leftWheel) + ";" + (int)(m.rightWheel) + "\n";
+						
+				System.out.println(toSend);			
+
+				socket.getOutputStream().write(toSend.getBytes());
+
+			} catch (Exception e) {
+				System.out.println("erreur d'envoi bluetooth: " + e.getMessage());
+			}
 		}
 	}
 
