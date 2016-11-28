@@ -47,7 +47,7 @@ public class Manette implements Runnable{
 			//System.out.println("L : " + bbox.movement.leftWheel + " R: " + bbox.movement.rightWheel	);
 
 			//envoi
-			robot.sendMovement( bbox.movement );
+			robot.doMovement( bbox.movement );
 
 			try {
 				Thread.sleep(100);

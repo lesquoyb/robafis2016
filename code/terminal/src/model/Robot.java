@@ -1,23 +1,44 @@
 package model;
 
+import java.util.Observable;
+
 import manette.BluetoothManager;
 import manette.Movement;
 
-public class Robot {
-	private static String DEFAULT_BT_IP = "10.0.1.1";
+public class Robot extends Observable {
+	String ip = "10.0.1.1";
 	boolean connected = false;
 	
 	BluetoothManager b = new BluetoothManager();
 	
 	public Robot() {
-		connected = b.connect(DEFAULT_BT_IP);
+		reconnect();
 	}
 
-	public void sendMovement(Movement movement) {
-		b.sendMovement(movement);
+	public void doMovement(Movement movement) {
+		if (connected)
+			b.sendMovement(movement);
+	}
+	
+	public void reconnect(){
+		connected = b.connect(ip);
+		setChanged();
+		notifyObservers();
 	}
 	
 	public boolean isConnected(){
 		return connected;
+	}
+	
+	public String getIP(){
+		return ip;
+	}
+	
+	public void setIP(String newIP){
+		ip = newIP;
+	}
+	
+	public void refresh(){
+	
 	}
 }

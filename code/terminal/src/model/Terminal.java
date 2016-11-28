@@ -7,11 +7,15 @@ public class Terminal {
 	
 	public Terminal() {
 		camera = new Camera();
-		//robot = new Robot();
+		robot = new Robot();
 		//manette = new Manette(robot);
 	}
 	
 	public Camera getCamera(){
 		return camera;
+	}
+
+	public Robot getRobot() {
+		return robot;
 	}
 }

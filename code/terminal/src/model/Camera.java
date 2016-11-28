@@ -12,7 +12,7 @@ public class Camera extends Observable {
 	boolean connected = false;
 	
 
-	public boolean isCamConnected() {
+	public boolean isConnected() {
 		return connected;
 	}
 

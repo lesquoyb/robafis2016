@@ -28,6 +28,10 @@ public class BluetoothManager {
 		}
 		return true;
 	}
+	
+	public boolean stillAlive(){
+		return !(socket.isInputShutdown() && socket.isOutputShutdown());
+	}
 
 
 	public void sendMovement(Movement m) 

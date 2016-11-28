@@ -11,7 +11,7 @@ public class Frame extends JFrame {
 
 	CameraPanel camPan;
 	ChatPanel chatPan;
-	InfoPanel infoPan;
+	StatusPanel infoPan;
 	MissionStatePanel missionPan;
 	
 	public Frame(Terminal terminal) {
@@ -20,7 +20,7 @@ public class Frame extends JFrame {
 	
 		camPan = new CameraPanel(terminal.getCamera());
 		chatPan = new ChatPanel(terminal);
-		infoPan = new InfoPanel(terminal);
+		infoPan = new StatusPanel(terminal);
 		missionPan = new MissionStatePanel(terminal);
 	
 		add(camPan, BorderLayout.CENTER);
