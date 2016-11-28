@@ -8,11 +8,13 @@ import manette.Movement;
 public class Robot extends Observable {
 	String ip = "10.0.1.1";
 	boolean btConnected;
+	boolean refreshing;
 	
 	BluetoothManager b = new BluetoothManager();
 	
 	public Robot() {
 		btConnected = false;
+		refreshing = false;
 	}
 
 	public void doMovement(Movement movement) {
@@ -21,9 +23,23 @@ public class Robot extends Observable {
 	}
 	
 	public void reconnectBT(){
-		btConnected = b.connect(ip);
-		setChanged();
-		notifyObservers();
+		if (refreshing) return;
+		
+		Thread reco = new Thread(){
+			@Override
+			public void run() {
+				refreshing = true;
+				setChanged();
+				notifyObservers();
+				
+				btConnected = b.connect(ip);
+				
+				refreshing = false;
+				setChanged();
+				notifyObservers();
+			}
+		};
+		reco.start();
 	}
 	
 	public boolean isConnectedToBT(){
@@ -38,7 +54,7 @@ public class Robot extends Observable {
 		ip = newIP;
 	}
 	
-	public void refresh(){
-	
+	public boolean isRefreshing(){
+		return refreshing;
 	}
 }
