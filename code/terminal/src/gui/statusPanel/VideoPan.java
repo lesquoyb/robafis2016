@@ -15,8 +15,8 @@ import javax.swing.JTextField;
 
 import model.Camera;
 
-@SuppressWarnings("serial")
-public class VideoPan extends JPanel implements Observer {
+public 
+class VideoPan extends JPanel implements Observer {
 	JLabel etat_video = new JLabel(StatusPanel.rouge);
 	Camera camera;
 
@@ -83,7 +83,7 @@ public class VideoPan extends JPanel implements Observer {
 						refresh();
 					}
 				}, 
-				200
+				500
 				);
 	}
 }
