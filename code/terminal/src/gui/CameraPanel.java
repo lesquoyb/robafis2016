@@ -32,7 +32,9 @@ public class CameraPanel extends JPanel implements Observer{
 		this.camera = camera;
 		camera.addObserver(this);
 
-		camDim = new Dimension(getWidth(), getHeight());
+
+		camDim = new Dimension(camera.getWidth(), camera.getHeight());
+
 		setPreferredSize(camDim);
 		
 		setBackground(Color.BLACK);
@@ -51,8 +53,7 @@ public class CameraPanel extends JPanel implements Observer{
 
 			camera.setConnected(true);
 		} catch (Exception e) {}
-	
-	
+
 	}
 
 
