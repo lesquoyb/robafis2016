@@ -32,11 +32,11 @@ public class CameraPanel extends JPanel implements Observer{
 		this.camera = camera;
 		camera.addObserver(this);
 
-		camDim = new Dimension(1280, 720);
+		camDim = new Dimension(getWidth(), getHeight());
 		setPreferredSize(camDim);
 		
 		setBackground(Color.BLACK);
-/*
+
 		try {
 			IpCamDeviceRegistry.register("Robot" + camera.getNumCam() , "http://" + camera.getIp() + "/video", IpCamMode.PUSH);
 
@@ -52,7 +52,7 @@ public class CameraPanel extends JPanel implements Observer{
 			camera.setConnected(true);
 		} catch (Exception e) {}
 	
-	*/
+	
 	}
 
 

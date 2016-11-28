@@ -7,7 +7,7 @@ public class Camera extends Observable {
 	int numCam = 0;
 	String ipCam = "192.168.43.1:8080";
 	int width = 800;
-	int height = 600;
+	int height = 480;
 	
 	boolean connected = false;
 	
