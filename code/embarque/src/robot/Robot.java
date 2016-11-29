@@ -65,6 +65,9 @@ public class Robot {
 	final double KD = 8;
 	
 	public void followLine(int basespeed){
+		int angle_end = 170;
+		int angle_after_end = 350;
+		double dist_after_end = 5;
 		
 		Sound.beep();
 		Vector<Double> vInteg = new Vector<Double>(VSIZE);
@@ -89,13 +92,8 @@ public class Robot {
 			integral += cheat;
 		}
 		
-		while ( true ) {
+		while ( gyroscope.getValue() < angle_end ) {
 			//System.out.println((int)colorSensor.getValue());
-			
-			/*double gyro = gyroscope.getValue() % 90;
-			if (gyro > 45) gyro = 90 - gyro;
-			gyro /= 45;
-			*/
 			
 			error = (objective - colorSensor.getValue());
 			
@@ -120,14 +118,30 @@ public class Robot {
 			motorL.setSpeed((int) (speed - prop));
 			motorR.setSpeed((int) (speed + prop));
 			
-			
-			
-			//System.out.println("speed: " + (int)speed);
-			//System.out.println("corre: " + (int)todo);
-			//System.out.println(error);
-			
 			Delay.msDelay((int)iteration_time);
 			
 		}
+		
+		// On se met bien pour rouler
+		motorL.setSpeed(0);
+		motorR.setSpeed(0);
+		while ( gyroscope.getValue() < angle_after_end ) {
+			motorL.setSpeed(350);
+		}
+		motorL.setSpeed(0);
+		
+		int st_l = motorL.getTachos();
+		motorL.setSpeed(15);
+		motorR.setSpeed(15);
+		while ( motorL.distanceFrom(st_l) < 5 ){
+			
+		}
+		motorL.setSpeed(0);
+		motorR.setSpeed(0);
+	}
+	
+	public void setWheelSize(double d) {
+		motorL.setWheelDiameter(d);
+		motorR.setWheelDiameter(d);
 	}
 }

@@ -4,6 +4,8 @@ import lejos.hardware.motor.NXTRegulatedMotor;
 
 public class Motor {
 	NXTRegulatedMotor motor;
+	double wheelPerimeter = 1;
+	double tachosPerCM = 0;
 	
 	public Motor(String port){
 		switch(port){
@@ -57,5 +59,19 @@ public class Motor {
 		
 		motor.setSpeed(speed);
 		motor.rotate(position);
+	}
+	
+	public void setWheelDiameter(double wheelP){
+		wheelPerimeter = wheelP * Math.PI;
+		tachosPerCM = (int)(360 / wheelPerimeter);
+	}
+	
+	public double getTachoPerCm(){
+		return tachosPerCM;
+	}
+
+	public int distanceFrom(int start) {
+		int curr = getTachos();
+		return (int) ((curr-start) / tachosPerCM);
 	}
 }
