@@ -21,12 +21,11 @@ public class BluetoothServer {
 	private Robot robot;
 	int PORT = 5000;
 
-	
-	
+
+
 	public BluetoothServer(Robot r) {
 		robot = r;
 		socket = null;
-		establishConnection();
 	}
 
 	public boolean connect(String ip) 
@@ -38,14 +37,14 @@ public class BluetoothServer {
 		}
 		return true;
 	}
-	
+
 	public boolean stillAlive(){
 		return !(socket.isInputShutdown() && socket.isOutputShutdown());
 	}
 
-	
+
 	public void establishConnection(){
-		
+
 		boolean notConnected = true;
 		while(notConnected){
 			try{
@@ -56,7 +55,7 @@ public class BluetoothServer {
 				bufferReader = new BufferedReader(new InputStreamReader (connected.getInputStream()));
 				LCD.clear();
 				LCD.drawString("Command Center found!", 0, 0);
-				
+
 				notConnected = false;
 			}
 			catch(Exception e){
@@ -64,70 +63,68 @@ public class BluetoothServer {
 			}
 		}
 	}
-	
-	
-	public void sendColor(int color){
-		if(connected != null){
+
+	public void listen() {
+
+		while(true){
+
+			establishConnection();
+			
+			String fromclient;
 			try {
 				bos = new BufferedOutputStream(connected.getOutputStream());
-				bos.write(("c:"+Integer.toString(color) + "\n").getBytes());
+				bos.write( ("ready\n").getBytes());
 				bos.flush();
-			} catch (IOException e) {
-				e.printStackTrace();
+			} catch (IOException e1) {
+				e1.printStackTrace();
 			}
-		}
-	}
-	
-	public void listen() {
-		
-		String fromclient;
-		try {
-			bos = new BufferedOutputStream(connected.getOutputStream());
-			bos.write( ("ready\n").getBytes());
-			bos.flush();
-		} catch (IOException e1) {
-			e1.printStackTrace();
-		}
-		boolean done = false;
-		while( ! connected.isClosed()) {
-			try {
-				fromclient = bufferReader.readLine();
-				System.out.println(fromclient);
-				switch(fromclient){
-				case "s":
-					if(!done)
-					robot.followLine(700);
-					done = true;
+			boolean done = false;
+			String tmp;
+			while( ! connected.isClosed()) {
+				try {
+					fromclient = bufferReader.readLine();
+					tmp = fromclient.split(":")[0];
+					switch(tmp){
+					case "s":
+						if(!done)
+							robot.followLine(700);
+						done = true;
+						break;
+					case "e":
+						robot.error(fromclient.split(":")[1]);
+						break;
+					case "d":
+						robot.distribute();
+						break;
+					case "f":
+						System.out.println("pas implémenté ducon");
+						break;
+					default:
+						int speedR, speedL;
+
+						String[] val = fromclient.split(";");
+						speedL = new Integer(val[0]);
+						speedR = new Integer(val[1]);
+
+						robot.motorL.setSpeed(speedL);
+						robot.motorR.setSpeed(speedR);
+
+						break;
+					}
+
+					bos.flush();
+
+				} catch (IOException e) {
+
+					e.printStackTrace();
+					System.out.println(e.getMessage() + "reconnection");
 					break;
-				case "e":
-					robot.error(fromclient.split(":")[1]);
-					break;
-				case "d":
-					robot.distribute();
-					break;
-				default:
-					int speedR, speedL;
-					
-					String[] val = fromclient.split(";");
-					speedL = new Integer(val[0]);
-					speedR = new Integer(val[1]);
-					System.out.println("" + speedL + " " + speedR);
-					
-					robot.motorL.setSpeed(speedL);
-					robot.motorR.setSpeed(speedR);
-					
-					break;
+
 				}
-				
-				bos.flush();
-				
-			} catch (IOException e) {
-				
-				e.printStackTrace();
-				System.out.println(e.getMessage());
 			}
+			System.out.println("connection fermée ");
 		}
-		
+
 	}
-	
+
 }

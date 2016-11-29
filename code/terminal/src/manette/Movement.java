@@ -21,6 +21,7 @@ public class Movement {
 	public double leftWheel;
 	public double rightWheel;
 	
+	public String error;
 	
 	
 	public void calculateWheelsSpeed(){
@@ -58,45 +59,16 @@ public class Movement {
 	
 	@Override
 	public String toString() {
+		String tmp = error;
+		error = "";
 		return "" + (int)(leftWheel) + ";" + (int)(rightWheel) + "\n"
 				+ ((boutonA) ? "d\n" : "")
-				+ ((boutonStart) ? "s\n" : "");
+				+ ((boutonStart) ? "s\n" : "")
+				+ ((! tmp.equals("")) ? "e:"+tmp+"\n" :"" );
 		
 	}
 	
 	
 	
-
-
-	@Override
-	public boolean equals(Object obj) {
-		if (this == obj)
-			return true;
-		if (obj == null)
-			return false;
-		if (getClass() != obj.getClass())
-			return false;
-		Movement other = (Movement) obj;
-		if (boutonA != other.boutonA)
-			return false;
-		if (Double.doubleToLongBits(direction) != Double.doubleToLongBits(other.direction))
-			return false;
-		if (Double.doubleToLongBits(leftWheel) != Double.doubleToLongBits(other.leftWheel))
-			return false;
-		if (Double.doubleToLongBits(magnitude) != Double.doubleToLongBits(other.magnitude))
-			return false;
-		if (Double.doubleToLongBits(reverse) != Double.doubleToLongBits(other.reverse))
-			return false;
-		if (Double.doubleToLongBits(rightWheel) != Double.doubleToLongBits(other.rightWheel))
-			return false;
-		if (rotateLeft != other.rotateLeft)
-			return false;
-		if (rotateRight != other.rotateRight)
-			return false;
-		if (Double.doubleToLongBits(speed) != Double.doubleToLongBits(other.speed))
-			return false;
-		return boutonStart == other.boutonStart;
-	}
-
 	
 }

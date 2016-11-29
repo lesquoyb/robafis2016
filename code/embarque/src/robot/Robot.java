@@ -80,10 +80,9 @@ public class Robot {
 
 	public void followLine(int basespeed){
 		int angle_end = 140;
-		int angle_after_end = 350;
-		double dist_after_end = 5;
+		int angle_after_end = 175;
+		double dist_after_end = 40;
 
-		Sound.beep();
 		Vector<Double> vInteg = new Vector<Double>(VSIZE);
 		final double objective = (BLACK + WHITE )/2;
 		final int ERROR_MAX = (int)((objective- BLACK)*VSIZE);
@@ -138,21 +137,23 @@ public class Robot {
 		// On se met bien pour rouler
 		motorL.setSpeed(0);
 		motorR.setSpeed(0);
+		
 		while ( gyroscope.getValue() < angle_after_end ) {
-			motorL.setSpeed(200);
-			motorR.setSpeed(-200);
+			motorL.setSpeed(100);
+			motorR.setSpeed(-100);
 		}
 		motorL.setSpeed(0);
 
 		int st_l = motorL.getTachos();
-		while ( motorL.distanceFrom(st_l) > -10 ){
-			motorL.setSpeed(-100);
-			motorR.setSpeed(-100);
+		while ( Math.abs(motorL.distanceFrom(st_l)) < dist_after_end ){
+			motorL.setSpeed(100);
+			motorR.setSpeed(100);
 
 		}
-		Delay.msDelay(100);
+
 		motorL.setSpeed(0);
 		motorR.setSpeed(0);
+		Sound.beep();
 	}
 
 	public void setWheelSize(double d) {

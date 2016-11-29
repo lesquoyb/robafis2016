@@ -4,6 +4,8 @@ public class Terminal {
 	Camera camera;
 	Robot robot;
 	public Manette manette;
+	public String message;
+	
 	
 	public Terminal() {
 		camera = new Camera();
@@ -12,7 +14,7 @@ public class Terminal {
 	}
 	
 	public void listenPad(){
-		manette.listen();
+		manette.listen(this);
 	}
 	public Camera getCamera(){
 		return camera;

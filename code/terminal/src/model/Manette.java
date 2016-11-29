@@ -26,7 +26,7 @@ public class Manette{
 	public void setView(ManettePan v){
 		view = v;
 	}
-	public void listen() {
+	public void listen(Terminal terminal) {
 
 		initPad();
 		
@@ -34,7 +34,10 @@ public class Manette{
 			
 			if(xc.isConnected()){
 				bbox.movement.calculateWheelsSpeed();
+				bbox.movement.error = terminal.message;
+				terminal.message = "";
 			//	System.out.println("L : " + bbox.movement.leftWheel + " R: " + bbox.movement.rightWheel	);
+				
 				robot.doMovement( bbox.movement);
 				
 			}			

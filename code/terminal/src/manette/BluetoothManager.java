@@ -14,8 +14,8 @@ public class BluetoothManager {
 	private BufferedReader bufferedReader;
 	int PORT = 5000;
 
-	
-	
+
+
 	public BluetoothManager() {
 		socket = null;	
 	}
@@ -28,7 +28,7 @@ public class BluetoothManager {
 		}
 		return true;
 	}
-	
+
 	public boolean stillAlive(){
 		return !(socket.isInputShutdown() && socket.isOutputShutdown());
 	}
@@ -37,10 +37,13 @@ public class BluetoothManager {
 	public void sendMovement(Movement m) {
 		if (socket != null && socket.isConnected() && !socket.isClosed()) {
 			try {
-				
+
 				socket.getOutputStream().write(m.toString().getBytes());
-			
-			} catch (Exception e) {System.out.println("erreur d'envoi bluetooth: " + e.getMessage());}
+
+			} catch (Exception e) {
+				System.out.println("erreur d'envoi bluetooth: " + e.getMessage());
+
+			}
 		}
 	}
 
