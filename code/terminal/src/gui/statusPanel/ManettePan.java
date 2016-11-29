@@ -26,36 +26,10 @@ public class ManettePan extends JPanel{
 
 		etat_robot = new JLabel(StatusPanel.rouge);
 
-		final JButton refresh = new JButton(StatusPanel.rafraichir);
-		refresh.setBorder(BorderFactory.createEmptyBorder());
-		refresh.setContentAreaFilled(false);
 
-		refresh.addActionListener(new ActionListener() {
-			@Override
-			public void actionPerformed(ActionEvent e) {
-				
-				refresh.setIcon(StatusPanel.rafraichir);
-			}
-		});
-
-		refresh.addMouseListener(new MouseAdapter() {
-			@Override
-			public void mousePressed(java.awt.event.MouseEvent e) {
-				super.mousePressed(e);
-				refresh.setIcon(StatusPanel.rafraichir2);
-				m.initPad();
-			}
-
-			@Override
-			public void mouseReleased(java.awt.event.MouseEvent e) {
-				super.mouseReleased(e);
-				refresh.setIcon(StatusPanel.rafraichir);
-			}
-		});
 
 		add(new JLabel("Manette : "), BorderLayout.WEST);
 		add(etat_robot, BorderLayout.CENTER);
-		add(refresh, BorderLayout.EAST);
 	}
 	
 	public void refreshView(){

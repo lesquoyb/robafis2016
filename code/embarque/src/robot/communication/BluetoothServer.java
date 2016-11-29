@@ -94,7 +94,7 @@ public class BluetoothServer {
 		while( ! connected.isClosed()) {
 			try {
 				fromclient = bufferReader.readLine();
-				switch(fromclient.split(":")[0]){
+				switch(fromclient){
 				case "s":
 					robot.followLine(700);
 					break;

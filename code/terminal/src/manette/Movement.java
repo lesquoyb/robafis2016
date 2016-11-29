@@ -52,6 +52,8 @@ public class Movement {
 			leftWheel = ROBOT_ROTATE_SPEED;
 			rightWheel = -ROBOT_ROTATE_SPEED;
 		}
+		leftWheel = - leftWheel;
+		rightWheel = - rightWheel;
 	}	
 	
 	@Override

@@ -47,19 +47,7 @@ class VideoPan extends JPanel implements Observer {
 			}
 		});
 
-		refresh.addMouseListener(new MouseAdapter() {
-			@Override
-			public void mousePressed(java.awt.event.MouseEvent e) {
-				super.mousePressed(e);
-				refresh.setIcon(StatusPanel.rafraichir2);
-			}
-
-			@Override
-			public void mouseReleased(java.awt.event.MouseEvent e) {
-				super.mouseReleased(e);
-				refresh.setIcon(StatusPanel.rafraichir);
-			}
-		});
+		
 
 		add(new JLabel("Video : "), BorderLayout.WEST);
 		add(etat_video, BorderLayout.CENTER);
@@ -83,7 +71,7 @@ class VideoPan extends JPanel implements Observer {
 						refresh();
 					}
 				}, 
-				500
+				200
 				);
 	}
 }

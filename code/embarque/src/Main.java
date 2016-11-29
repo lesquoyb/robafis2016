@@ -1,17 +1,4 @@
-import lejos.hardware.Button;
-import lejos.hardware.lcd.LCD;
-import lejos.utility.Delay;
-import lejos.utility.TextMenu;
 import robot.Robot;
-import robot.actuators.Motor;
-import robot.actuators.Sound;
-import robot.brick.Battery;
-import robot.sensors.ColorReflectSensor;
-import robot.sensors.Gyroscope;
-import robot.sensors.RGBSensor;
-import robot.sensors.Sensor;
-import robot.sensors.TouchSensor;
-import robot.sensors.UltrasonicSensor;
 
 public class Main {
 	public static void main(String... args){

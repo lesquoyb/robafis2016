@@ -49,6 +49,7 @@ public class CameraPanel extends JPanel implements Observer{
 			video = new WebcamPanel(webcam);
 			video.setBounds(0, 0, getWidth(), getHeight());
 
+			video.setFillArea(true);
 			add(video);
 
 			camera.setConnected(true);
@@ -56,15 +57,12 @@ public class CameraPanel extends JPanel implements Observer{
 
 	}
 
+	
 
 	public void refresh(){
 		
 		
-		camera.setConnected(false);
-		
-		camDim = new Dimension(camera.getWidth(), camera.getHeight());
-		setPreferredSize(camDim);
-		
+		camera.setConnected(false);		
 		
 		if (video != null)
 			remove(video);
@@ -86,8 +84,10 @@ public class CameraPanel extends JPanel implements Observer{
 				video.stop();
 			
 			video = new WebcamPanel(webcam);
-			video.setBounds(0, 0, getWidth(), getHeight());
 
+
+
+			
 			add(video);
 			
 			camera.setConnected(true);	
@@ -95,8 +95,31 @@ public class CameraPanel extends JPanel implements Observer{
 	}
 
 
+	private void reconnect(){
+		
+	}
+	
+	
+	
 	@Override
 	public void update(Observable o, Object arg) {
+		reconnect();
 		refresh();
 	}
+
+
+
+	@Override
+	public void repaint() {
+		if(video != null){
+
+			video.setFillArea(true);
+			video.setBounds(0, 0, getWidth(), getHeight());
+		}
+		super.repaint();
+	}
+	
+	
+	
+	
 }

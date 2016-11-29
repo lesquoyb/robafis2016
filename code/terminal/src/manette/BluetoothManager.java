@@ -14,13 +14,13 @@ public class BluetoothManager {
 	private BufferedReader bufferedReader;
 	int PORT = 5000;
 
-	public BluetoothManager() 
-	{
+	
+	
+	public BluetoothManager() {
 		socket = null;	
 	}
 
-	public boolean connect(String ip) 
-	{
+	public boolean connect(String ip) {
 		try {
 			socket = new Socket(ip, PORT);
 		} catch (Exception e) {
@@ -34,14 +34,12 @@ public class BluetoothManager {
 	}
 
 
-	Movement last;
 	public void sendMovement(Movement m) {
-		if (socket != null && socket.isConnected() && !socket.isClosed() && ! last.equals(m)) {
+		if (socket != null && socket.isConnected() && !socket.isClosed()) {
 			try {
 				
 				socket.getOutputStream().write(m.toString().getBytes());
-				last = m;
-				
+			
 			} catch (Exception e) {System.out.println("erreur d'envoi bluetooth: " + e.getMessage());}
 		}
 	}

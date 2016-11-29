@@ -41,6 +41,7 @@ public class Camera extends Observable {
 	}
 
 	public void reconnect() {
+		setChanged();
 		notifyObservers();
 	}
 
