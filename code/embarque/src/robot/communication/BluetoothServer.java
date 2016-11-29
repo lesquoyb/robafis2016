@@ -78,9 +78,6 @@ public class BluetoothServer {
 		}
 	}
 	
-	static final double trigger_dead_zone = 0.4;
-	int MAX_TRIGGER_SPEED = 400;
-	
 	public void listen() {
 		
 		String fromclient;
@@ -91,12 +88,16 @@ public class BluetoothServer {
 		} catch (IOException e1) {
 			e1.printStackTrace();
 		}
+		boolean done = false;
 		while( ! connected.isClosed()) {
 			try {
 				fromclient = bufferReader.readLine();
+				System.out.println(fromclient);
 				switch(fromclient){
 				case "s":
+					if(!done)
 					robot.followLine(700);
+					done = true;
 					break;
 				case "e":
 					robot.error(fromclient.split(":")[1]);
@@ -129,11 +130,4 @@ public class BluetoothServer {
 		
 	}
 	
-	
-	private double apply_trigger_dead_zone(double x){
-		if(x > -trigger_dead_zone && x < trigger_dead_zone)
-			return 0;
-		return x - trigger_dead_zone;
-	}
-
 }

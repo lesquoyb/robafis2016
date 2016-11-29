@@ -3,8 +3,8 @@ package manette;
 public class Movement {
 
 	private static final float ROBOT_STEERING_RATIO_LIMIT = 0.7f;
-	private static final float ROBOT_SPEED_LIMIT = 720; //valeur max d'une roue
-	private static final float ROBOT_ROTATE_SPEED = 500;
+	private static final float ROBOT_SPEED_LIMIT = 600; //valeur max d'une roue
+	private static final float ROBOT_ROTATE_SPEED = 100;
 	
 	//Inputs Manette
 	public boolean boutonA;
@@ -58,22 +58,9 @@ public class Movement {
 	
 	@Override
 	public String toString() {
-		String data = "";
-		
-		 // Exemple de gestion pour le bouton A (Faite comme vous voulez, c'est juste un exemple ici ^^)
-		if (boutonA) {
-			data += "Bouton A \n";
-		}
-		
-		data += "Acceleration : " + speed + "\n";
-		data += "Reverse : " + reverse + "\n";
-		data += "Direction : " + direction + "\n";
-		data += "Magnitude : " + magnitude + "\n";
-		
-		
 		return "" + (int)(leftWheel) + ";" + (int)(rightWheel) + "\n"
-				+ ((boutonA) ? "d" : "")
-				+ ((boutonStart) ? "s" : "");
+				+ ((boutonA) ? "d\n" : "")
+				+ ((boutonStart) ? "s\n" : "");
 		
 	}
 	
