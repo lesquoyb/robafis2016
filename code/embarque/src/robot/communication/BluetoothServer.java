@@ -87,7 +87,7 @@ public class BluetoothServer {
 					switch(tmp){
 					case "s":
 						if(!done)
-							robot.followLine(700);
+							robot.followLine();
 						done = true;
 						break;
 					case "e":

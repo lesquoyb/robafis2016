@@ -13,16 +13,19 @@ public class BluetoothManager {
 	private Socket socket;
 	private BufferedReader bufferedReader;
 	int PORT = 5000;
+	boolean alive;
 
 
 
 	public BluetoothManager() {
 		socket = null;	
+		alive = false;
 	}
 
 	public boolean connect(String ip) {
 		try {
 			socket = new Socket(ip, PORT);
+			alive = true;
 		} catch (Exception e) {
 			return false;
 		}
@@ -30,7 +33,7 @@ public class BluetoothManager {
 	}
 
 	public boolean stillAlive(){
-		return !(socket.isInputShutdown() && socket.isOutputShutdown());
+		return alive;
 	}
 
 
@@ -42,7 +45,7 @@ public class BluetoothManager {
 
 			} catch (Exception e) {
 				System.out.println("erreur d'envoi bluetooth: " + e.getMessage());
-
+				alive = false;
 			}
 		}
 	}

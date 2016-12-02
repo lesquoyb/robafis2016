@@ -1,29 +1,15 @@
 package gui.statusPanel;
 
-import java.awt.BorderLayout;
-import java.awt.Color;
 import java.awt.Component;
 import java.awt.Dimension;
-import java.awt.event.ActionEvent;
-import java.awt.event.ActionListener;
-import java.awt.event.MouseAdapter;
-import java.util.Observable;
-import java.util.Observer;
-import java.util.Timer;
-import java.util.TimerTask;
+import java.awt.Font;
 
-import javax.swing.BorderFactory;
 import javax.swing.Box;
 import javax.swing.BoxLayout;
 import javax.swing.ImageIcon;
-import javax.swing.JButton;
 import javax.swing.JLabel;
 import javax.swing.JPanel;
-import javax.swing.JTextField;
 
-import model.Camera;
-import model.Manette;
-import model.Robot;
 import model.Terminal;
 
 
@@ -51,6 +37,7 @@ public class StatusPanel extends JPanel{
 
 
 		JLabel title = new JLabel("ETAT DES PERIPHERIQUES");
+		title.setFont(new Font(title.getFont().getName(), Font.PLAIN, 18));
 		title.setAlignmentX(Component.CENTER_ALIGNMENT);
 
 		co_robot = new RobotPan(terminal.getRobot());

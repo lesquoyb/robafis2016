@@ -78,10 +78,12 @@ public class Robot {
 	final double KI = 0.03;
 	final double KD = 8;
 
-	public void followLine(int basespeed){
-		int angle_end = 140;
+	int basespeed = 500;
+	
+	public void followLine(){
+		int angle_end = 145;
 		int angle_after_end = 175;
-		double dist_after_end = 40;
+		double dist_after_end = 35;
 
 		Vector<Double> vInteg = new Vector<Double>(VSIZE);
 		final double objective = (BLACK + WHITE )/2;
@@ -146,8 +148,8 @@ public class Robot {
 
 		int st_l = motorL.getTachos();
 		while ( Math.abs(motorL.distanceFrom(st_l)) < dist_after_end ){
-			motorL.setSpeed(100);
-			motorR.setSpeed(100);
+			motorL.setSpeed(200);
+			motorR.setSpeed(200);
 
 		}
 

@@ -47,6 +47,7 @@ public class Robot extends Observable {
 	}
 
 	public boolean isConnectedToBT(){
+		btConnected = b.stillAlive();
 		return btConnected;
 	}
 
@@ -60,5 +61,19 @@ public class Robot extends Observable {
 
 	public void refresh(){
 
+	}
+
+	public double getAngle() {
+		return 0;
+	}
+
+	public int getPosX() {
+		// TODO Auto-generated method stub
+		return 0;
+	}
+
+	public int getPosY() {
+		// TODO Auto-generated method stub
+		return 0;
 	}
 }

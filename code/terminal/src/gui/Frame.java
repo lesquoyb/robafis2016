@@ -19,7 +19,7 @@ public class Frame extends JFrame {
 		// Gestion des composants de la fenetre
 		setLayout(new BorderLayout());
 	
-		camPan = new CameraPanel(terminal.getCamera());
+		camPan = new CameraPanel(terminal);
 		chatPan = new ChatPanel(terminal);
 		infoPan = new StatusPanel(terminal);
 		missionPan = new MissionStatePanel(terminal);

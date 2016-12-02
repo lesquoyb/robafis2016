@@ -50,4 +50,8 @@ public class Camera extends Observable {
 		setChanged();
 	}
 
+	public void getInstantImage() {
+		
+	}
+
 }

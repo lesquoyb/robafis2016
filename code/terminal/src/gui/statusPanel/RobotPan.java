@@ -36,7 +36,7 @@ class RobotPan extends JPanel implements Observer{
 				refresh();
 			}
 		};
-		timer.schedule(myTask, 2000);
+		timer.schedule(myTask, 0, 2000);
 
 
 
