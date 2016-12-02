@@ -31,7 +31,6 @@ public class Robot {
 		distr = new Motor("C");
 		distr.reset();
 		btServer = new BluetoothServer(this);
-
 	}
 
 	public void error(String message){
@@ -64,6 +63,7 @@ public class Robot {
 			});
 			t.start();
 			distr.moveDegree(360, 720);
+			btServer.ackDist();
 			dispo = false;
 		}
 	}

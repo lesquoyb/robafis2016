@@ -5,6 +5,7 @@ public class Terminal {
 	Robot robot;
 	public Manette manette;
 	public String message;
+	public int depose;
 	
 	
 	public Terminal() {

@@ -16,9 +16,9 @@ public class Robot extends Observable {
 		refreshing = false;
 	}
 
-	public void doMovement(Movement movement) {
+	public void doMovement(Movement movement, Terminal terminal) {
 		if (btConnected)
-			b.sendMovement(movement);
+			b.sendMovement(movement, terminal);
 	}
 
 	public boolean isRefreshing(){

@@ -1,11 +1,10 @@
 package manette;
 
 import java.io.BufferedReader;
-import java.io.IOException;
 import java.io.InputStreamReader;
 import java.net.Socket;
-import java.util.ArrayList;
-import java.util.List;
+
+import model.Terminal;
 
 
 public class BluetoothManager {	
@@ -37,12 +36,16 @@ public class BluetoothManager {
 	}
 
 
-	public void sendMovement(Movement m) {
+	public void sendMovement(Movement m, Terminal terminal) {
 		if (socket != null && socket.isConnected() && !socket.isClosed()) {
 			try {
-
+				
 				socket.getOutputStream().write(m.toString().getBytes());
-
+				if(m.boutonA){
+					BufferedReader bufferReader = new BufferedReader(new InputStreamReader (socket.getInputStream()));
+					bufferReader.readLine();
+					terminal.depose++;
+				}
 			} catch (Exception e) {
 				System.out.println("erreur d'envoi bluetooth: " + e.getMessage());
 				alive = false;

@@ -38,7 +38,7 @@ public class Manette{
 				terminal.message = "";
 			//	System.out.println("L : " + bbox.movement.leftWheel + " R: " + bbox.movement.rightWheel	);
 				
-				robot.doMovement( bbox.movement);
+				robot.doMovement( bbox.movement, terminal);
 				
 			}			
 			view.refreshView();

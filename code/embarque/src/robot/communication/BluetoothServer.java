@@ -28,8 +28,16 @@ public class BluetoothServer {
 		socket = null;
 	}
 
-	public boolean connect(String ip) 
-	{
+	public void ackDist(){
+		try {
+			bos.write("ok".getBytes());
+			bos.flush();
+		} catch (IOException e) {
+			e.printStackTrace();
+		}
+	}
+	
+	public boolean connect(String ip) {
 		try {
 			socket = new Socket(ip, PORT);
 		} catch (Exception e) {
