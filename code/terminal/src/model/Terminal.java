@@ -8,14 +8,16 @@ public class Terminal extends Observable {
 	public Manette manette;
 	public String message;
 	public int depose, phase;
-	
-	
+
+	public int batterie;
+
+
 	public Terminal() {
 		camera = new Camera();
 		robot = new Robot(this);
 		manette = new Manette(robot);
 	}
-	
+
 	public void listenPad(){
 		manette.listen(this);
 	}
@@ -40,7 +42,14 @@ public class Terminal extends Observable {
 	}
 
 	public void setPosition(int posX, int posY, int angle) {
-		// TODO Auto-generated method stub
-		
+		System.out.println(posX + " -- " + posY + " -- " + angle);
+	}
+
+	public void setBatterie(int integer) {
+		if ( batterie != integer){
+			batterie = integer;
+			setChanged();
+			notifyObservers();
+		}
 	}
 }

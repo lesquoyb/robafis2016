@@ -9,6 +9,7 @@ import java.net.Socket;
 
 import lejos.hardware.lcd.LCD;
 import robot.Robot;
+import robot.brick.Battery;
 
 public class BluetoothServer {
 
@@ -136,5 +137,25 @@ public class BluetoothServer {
 			
 		}
 
+	}
+
+	public void sendBatterie() {
+		try {
+			bos = new BufferedOutputStream(connected.getOutputStream());
+			String data = "batterie:" + Battery.getPercentage() + "\n";
+			bos.write(data.getBytes());
+			bos.flush();
+		} catch (Exception e) {}
+	}
+
+	public void sendPosition(float x_pos, float y_pos, float theta) {
+		try {
+			bos = new BufferedOutputStream(connected.getOutputStream());
+			String data = x_pos + ";" + y_pos + ";" + theta + "\n";
+			bos.write(data.getBytes());
+			bos.flush();
+		} catch (Exception e) {
+			e.printStackTrace();
+		}
 	}
 }

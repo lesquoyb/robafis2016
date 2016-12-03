@@ -74,4 +74,8 @@ public class Motor {
 		int curr = getTachos();
 		return (int) ((curr-start) / tachosPerCM);
 	}
+
+	public void resetTachos() {
+		motor.resetTachoCount();
+	}
 }

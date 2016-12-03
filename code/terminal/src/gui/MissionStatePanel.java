@@ -35,7 +35,7 @@ public class MissionStatePanel extends JPanel implements Observer {
 	public MissionStatePanel(Terminal terminal) {
 		this.terminal = terminal;
 		terminal.addObserver(this);
-		setPreferredSize(new Dimension(250, 0));
+		setPreferredSize(new Dimension(300, 0));
 		
 		this.setLayout(new BorderLayout());
 
@@ -44,7 +44,7 @@ public class MissionStatePanel extends JPanel implements Observer {
 		add(title, BorderLayout.NORTH);
 		
 		press_start = "<html><center>"
-				+ "<h2>Phase 1:<br>Déplacement automatique</h2>"
+				+ "<h3>Phase 1: Déplacement automatique</h3>"
 				+ "APPUYEZ SUR"
 				+ "<b><h1> START </h1></b>"
 				+ "POUR DEMARRER"
@@ -128,13 +128,13 @@ public class MissionStatePanel extends JPanel implements Observer {
 
 	public void missions(){
 		phase1 = "<html><center>"
-				+ "<h2>Phase 1:<br>Déplacement automatique</h2>"
+				+ "<h3>Phase 1: Déplacement automatique</h3>"
 				+ "Cette phase est automatique." + "<br>"
 				+ "Veuillez attendre le retour sonore"
 				+ "</center></html>";
 		
 		phase3 = "<html><center>"
-				+ "<h2>Phase 3: retour</h2>"
+				+ "<h3>Phase 3: retour</h3>"
 				+ "Déplacez le robot afin de le ramener" + "<br>"
 				+ "au camp de base en suivant le" + "<br>"
 				+ "chemin défini par les ligne noires"
@@ -145,7 +145,7 @@ public class MissionStatePanel extends JPanel implements Observer {
 		over = 1;
 
 		phase2 = "<html><center>"
-				+ "<h2>Phase 2: balisage</h2>"
+				+ "<h3>Phase 2: balisage</h3>"
 				+ "Déplacez le robot pour déposer" + "<br>"
 				+ "une balise sur la crevasse."
 				+ "<h1> 0/1 </h1>"
@@ -156,7 +156,7 @@ public class MissionStatePanel extends JPanel implements Observer {
 		over = 2;
 
 		phase2 = "<html><center>"
-				+ "<h2>Phase 2: balisage</h2>"
+				+ "<h3>Phase 2: balisage</h3>"
 				+ "Déplacez le robot pour déposer" + "<br>"
 				+ "une balise sur chaque zones" + "<br>"
 				+ "de faible luminosité."
@@ -168,7 +168,7 @@ public class MissionStatePanel extends JPanel implements Observer {
 		over = 3;
 
 		phase2 = "<html><center>"
-				+ "<h2>Phase 2: balisage</h2>"
+				+ "<h3>Phase 2: balisage</h3>"
 				+ "Déplacez le robot pour déposer" + "<br>"
 				+ "une balise sur chaque zones" + "<br>"
 				+ "de mauvaise liaison."
@@ -178,12 +178,13 @@ public class MissionStatePanel extends JPanel implements Observer {
 
 	@Override
 	public void update(Observable o, Object arg) {
+		if (terminal.phase == 2)
+			lp2.setText(lp2.getText().replaceAll("[0-9]/[0-9]", terminal.depose + "/" + over));
+		
+		
 		if (terminal.phase == 2 && terminal.depose == over){
 			terminal.phase = 3;
 		}
-
-		lp2.setText(lp2.getText().replaceAll("[0-9]/[0-9]", terminal.depose + "/" + over));
-		
 		
 		switch (terminal.phase){
 		case 1:

@@ -51,12 +51,15 @@ public class BluetoothManager {
 					String tmp;
 					while (stillAlive()){
 						String fromclient = bufferReader.readLine();
+						String[] val;
 						tmp = fromclient.split(":")[0];
 						switch(tmp){
 						case "balise":
 							terminal.baliseDepose();
 							break;
 						case "batterie":
+							val = fromclient.split(":");
+							terminal.setBatterie(new Integer(val[1]));
 							break;
 						case "phase2":
 							terminal.setPhase(2);
@@ -64,10 +67,10 @@ public class BluetoothManager {
 						default:
 							int posX, posY, angle;
 
-							String[] val = fromclient.split(";");
-							posX = new Integer(val[0]);
-							posY = new Integer(val[1]);
-							angle = new Integer(val[2]);
+							val = fromclient.split(";");
+							posX = (new Float(val[0])).intValue();
+							posY = (new Float(val[1])).intValue();
+							angle = (new Float(val[2])).intValue();
 							
 							terminal.setPosition(posX, posY, angle);
 						}

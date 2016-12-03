@@ -31,6 +31,14 @@ public class Robot {
 		distr = new Motor("C");
 		distr.reset();
 		btServer = new BluetoothServer(this);
+		
+		Timer batterie = new Timer(10000, new TimerListener() {
+			@Override
+			public void timedOut() {
+				btServer.sendBatterie();
+			}
+		});
+		batterie.start();
 	}
 
 	public void error(String message){
@@ -49,6 +57,7 @@ public class Robot {
 	}
 
 	public void listenMode(){
+		new Odometry(this);
 		btServer.listen();
 	}
 

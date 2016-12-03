@@ -1,5 +1,6 @@
 package gui;
 
+import java.awt.Color;
 import java.awt.image.BufferedImage;
 import java.io.File;
 import java.io.IOException;
@@ -21,6 +22,8 @@ public class MiniMap extends JPanel{
 	int distWheelY = 40;
 	int angle = 0;
 	
+	int minX, minY, maxX, maxY;
+	
 	// NB cm par rapport au centre de vue de la camera / position pixel equivalent a l'ecran
 	HashMap<Coords, Coords> corresp = new HashMap<>();
 	
@@ -31,14 +34,16 @@ public class MiniMap extends JPanel{
 		this.camera = camera;
 		
 		corresp.put(new Coords(0, 0), new Coords(0, 0));
+		
+		addPixel(0, 0, 0);
 	}
 
 	public void update() {
-		BufferedImage image = camera.getImage();
+		BufferedImage image = (BufferedImage)(camera.getImage());
 		
 		//temp
 		try {
-			image = ImageIO.read(new File("assets/images/rouge.png"));
+			image = ImageIO.read(new File("assets/images/capture.png"));
 		} catch (IOException e) {
 			// TODO Auto-generated catch block
 			e.printStackTrace();
@@ -61,10 +66,30 @@ public class MiniMap extends JPanel{
 			int imgx = corresp.get(co).x;
 			int imgy = corresp.get(co).y;
 			int color = image.getRGB(imgx, imgy);
-			minimap.put(new Coords(mapx, mapy), color);
 			
-			//System.out.println(mapx + " -- " + mapy);
+			addPixel(mapx, mapy, color);
+			
+			addPixel(50 - (int)(Math.random()*200), 50 - (int)(Math.random()*100), Color.HSBtoRGB(255, 255, 255));
 		}
+	}
+	
+	BufferedImage getMiniMap(){
+		BufferedImage img = new BufferedImage(maxX - minX, maxY - minY, BufferedImage.TYPE_3BYTE_BGR);
+		for (Coords c : minimap.keySet()) {
+			img.setRGB(c.x - minX, c.y - minY, minimap.get(c));
+		}
+		
+		return img;
+	}
+	
+	void addPixel(int x, int y, int color){
+		minX = Math.min(minX, x);
+		minY = Math.min(minY, y);
+		
+		maxX = Math.max(maxX, x+1);
+		maxY = Math.max(maxY, y+1);
+		
+		minimap.put(new Coords(x, y), color);
 	}
 }
 

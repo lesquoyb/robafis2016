@@ -10,7 +10,7 @@ public class Battery {
 	public static int getPercentage(){
 		int milli = lejos.hardware.Battery.getVoltageMilliVolt();
 		
-		int perc = Math.min(100, milli - MIN_BATTERY / 10);
+		int perc = Math.min(100, (milli - MIN_BATTERY) / 10);
 		
 		return perc;
 	}
