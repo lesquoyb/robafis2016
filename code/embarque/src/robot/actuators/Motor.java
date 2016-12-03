@@ -37,7 +37,7 @@ public class Motor {
 		motor.stop();
 	}
 
-	public void setSpeed(int speed) {
+	public void setSpeed(int speed) {		
 		if (speed < 0){
 			motor.backward();
 			speed = -speed;
@@ -48,17 +48,17 @@ public class Motor {
 	}
 	
 	public void moveDegree(int position, int speed){
-		
-		/*while ( motor.getTachoCount() % position > 10){
-			if (motor.getTachoCount() % position > position / 2)
-				setSpeed(50);
-			else
-				setSpeed(speed);
-		}
-		setSpeed(0);*/
-		
 		motor.setSpeed(speed);
 		motor.rotate(position);
+		
+		/*setSpeed(720);
+		while (Math.abs(motor.getPosition()) < 360);
+		
+		setSpeed(-20);
+		while (Math.abs(motor.getPosition()) > 360);
+		
+		motor.stop();*/
+		motor.flt();
 	}
 	
 	public void setWheelDiameter(double wheelP){

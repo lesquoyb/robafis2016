@@ -1,116 +1,204 @@
 package gui;
 
+import java.awt.BorderLayout;
 import java.awt.Color;
-import java.awt.Component;
 import java.awt.Dimension;
-import java.awt.Font;
+import java.awt.GridLayout;
+import java.awt.event.ActionEvent;
+import java.awt.event.ActionListener;
 
-import javax.swing.Box;
-import javax.swing.BoxLayout;
+import java.util.Observable;
+import java.util.Observer;
+
+import javax.swing.JButton;
 import javax.swing.JLabel;
 import javax.swing.JPanel;
+import javax.swing.SwingConstants;
 
 import model.Terminal;
 
 @SuppressWarnings("serial")
-public class MissionStatePanel extends JPanel {
+public class MissionStatePanel extends JPanel implements Observer {
+	Terminal terminal;
+	JPanel choixm = new JPanel();
+	JPanel phases = new JPanel();
+	
 	JPanel p1 = new JPanel();
 	JPanel p2 = new JPanel();
 	JPanel p3 = new JPanel();
-	JLabel nb_balise;
 	
+	JLabel title, lp1, lp2, lp3;
+	int over;
+	
+	String press_start, phase1, phase2, phase3;
+
 	public MissionStatePanel(Terminal terminal) {
+		this.terminal = terminal;
+		terminal.addObserver(this);
 		setPreferredSize(new Dimension(250, 0));
+		
+		this.setLayout(new BorderLayout());
 
-		setLayout(new BoxLayout(this, BoxLayout.PAGE_AXIS));
+		title = new JLabel("<html><h2><center>CHOIX DE LA MISSION</center><h2></html>");
+		title.setHorizontalAlignment(SwingConstants.CENTER);
+		add(title, BorderLayout.NORTH);
+		
+		press_start = "<html><center>"
+				+ "<h2>Phase 1:<br>Déplacement automatique</h2>"
+				+ "APPUYEZ SUR"
+				+ "<b><h1> START </h1></b>"
+				+ "POUR DEMARRER"
+				+ "</center></html>";
+		p1.setBackground(new Color(255, 200, 200));
+		
+		choixm.setLayout(new GridLayout(3, 1));
+		phases.setLayout(new GridLayout(3, 1));
+		
+		choixMission();
+		add(choixm);		
+	}
+
+	public void choixMission(){
+		JButton m1 = new JButton("<html><center>"+"Baliser 1 crevasse"+"</center></html>");
+		m1.addActionListener(
+			new ActionListener() {
+
+				@Override
+				public void actionPerformed(ActionEvent e) {
+					setMission(1);
+				}
+			}
+		);
+		choixm.add(m1);
+
+		JButton m2 = new JButton("<html><center>"+"Baliser 2 zones"+"<br>"+"de faible luminosité"+"</center></html>");
+		m2.addActionListener(
+			new ActionListener() {
+
+				@Override
+				public void actionPerformed(ActionEvent e) {
+					setMission(2);
+				}
+			}
+		);
+		choixm.add(m2);
+		
+		JButton m3 = new JButton("<html><center>"+"Baliser 3 zones"+"<br>"+"de mauvaises conditions de liaison"+"</center></html>");
+		m3.addActionListener(
+			new ActionListener() {
+
+				@Override
+				public void actionPerformed(ActionEvent e) {
+					setMission(3);
+				}
+			}
+		);
+		choixm.add(m3);
+	}
+
+	public void setMission(int i){
+		title.setText("<html><h2>ETAT DE LA MISSION</center><h2></html>");
 
 
-		JLabel title = new JLabel("ETAT DE LA MISSION");
-		title.setFont(new Font(title.getFont().getName(), Font.PLAIN, 18));
-		title.setAlignmentX(Component.CENTER_ALIGNMENT);
-		this.add(title);
+		remove(choixm);
+
+
+		missions();
+		if (i == 1)
+			mission1();
+		if (i == 2)
+			mission2();
+		if (i == 3)
+			mission3();
+
+		lp1 = new JLabel(press_start);
+		lp2 = new JLabel(phase2);
+		lp3 = new JLabel(phase3);
 		
-		nb_balise = new JLabel("___/___");
-		nb_balise.setFont(new Font(nb_balise.getFont().getName(), Font.PLAIN, 60));
-		nb_balise.setAlignmentY(Component.CENTER_ALIGNMENT);
+		p1.add(lp1);
+		p2.add(lp2);
+		p3.add(lp3);
 		
-		p1.setBackground(new Color(0, 255, 120));
-		p2.setBackground(new Color(255, 255, 120));
+		phases.add(p1);
+		phases.add(p2);
+		phases.add(p3);
 		
-		mission1();
+		add(phases);
+	}
+
+	public void missions(){
+		phase1 = "<html><center>"
+				+ "<h2>Phase 1:<br>Déplacement automatique</h2>"
+				+ "Cette phase est automatique." + "<br>"
+				+ "Veuillez attendre le retour sonore"
+				+ "</center></html>";
 		
-		
-		add(Box.createVerticalStrut(10));
-		this.add(p1);
-		add(Box.createVerticalStrut(10));
-		this.add(p2);
-		add(Box.createVerticalStrut(10));
-		this.add(p3);
+		phase3 = "<html><center>"
+				+ "<h2>Phase 3: retour</h2>"
+				+ "Déplacez le robot afin de le ramener" + "<br>"
+				+ "au camp de base en suivant le" + "<br>"
+				+ "chemin défini par les ligne noires"
+				+ "</center></html>";
 	}
 	
 	public void mission1(){
-		nb_balise.setText("0/1");
-		
-		p1.add(new JLabel("Phase 1: Déplacement au camp de base"));
-		p1.add(new JLabel("Cette phase est automatique."));
-		p1.add(new JLabel("Veuillez attendre le retour sonore"));
-		
-		
-		p2.add(new JLabel("Phase 2: balisage"));
-		p2.add(new JLabel("Déplacez le robot pour déposer"));
-		p2.add(new JLabel("une balise sur la crevasse."));
-		p2.add(new JLabel("                "));
-		p2.add(nb_balise);
-		
-		p3.add(new JLabel("Phase 3: retour"));
-		p3.add(new JLabel("Déplacez le robot afin de le"));
-		p3.add(new JLabel("ramener au camp de base"));
-		p3.add(new JLabel("en suivant le chemin défini"));
-		p3.add(new JLabel("par les ligne noires."));
-		
-		
+		over = 1;
+
+		phase2 = "<html><center>"
+				+ "<h2>Phase 2: balisage</h2>"
+				+ "Déplacez le robot pour déposer" + "<br>"
+				+ "une balise sur la crevasse."
+				+ "<h1> 0/1 </h1>"
+				+ "</center></html>";
 	}
-	
+
 	public void mission2(){
-		nb_balise.setText("0/2");
-		
-		p1.add(new JLabel("Phase 1: Déplacement au camp de base"));
-		p1.add(new JLabel("Cette phase est automatique."));
-		p1.add(new JLabel("Veuillez attendre le retour sonore"));
-		
-		
-		p2.add(new JLabel("Phase 2: balisage"));
-		p2.add(new JLabel("Déplacez le robot pour déposer"));
-		p2.add(new JLabel("une balise sur chaque zones"));
-		p2.add(new JLabel("de faible luminosité."));
-		p2.add(new JLabel("                      "));
-		p2.add(nb_balise);
-		
-		p3.add(new JLabel("Phase 3: retour"));
-		p3.add(new JLabel("Déplacez le robot afin de le"));
-		p3.add(new JLabel("ramener au camp de base"));
-		p3.add(new JLabel("en suivant le chemin défini"));
-		p3.add(new JLabel("par les ligne noires."));
+		over = 2;
+
+		phase2 = "<html><center>"
+				+ "<h2>Phase 2: balisage</h2>"
+				+ "Déplacez le robot pour déposer" + "<br>"
+				+ "une balise sur chaque zones" + "<br>"
+				+ "de faible luminosité."
+				+ "<h1> 0/2 </h1>"
+				+ "</center></html>";
 	}
-	
+
 	public void mission3(){
-		nb_balise.setText("0/3");
+		over = 3;
+
+		phase2 = "<html><center>"
+				+ "<h2>Phase 2: balisage</h2>"
+				+ "Déplacez le robot pour déposer" + "<br>"
+				+ "une balise sur chaque zones" + "<br>"
+				+ "de mauvaise liaison."
+				+ "<h1> 0/3 </h1>"
+				+ "</center></html>";
+	}
+
+	@Override
+	public void update(Observable o, Object arg) {
+		if (terminal.phase == 2 && terminal.depose == over){
+			terminal.phase = 3;
+		}
+
+		lp2.setText(lp2.getText().replaceAll("[0-9]/[0-9]", terminal.depose + "/" + over));
 		
-		p1.add(new JLabel("Phase 1: Déplacement au camp de base"));
-		p1.add(new JLabel("Cette phase est automatique."));
-		p1.add(new JLabel("Veuillez attendre le retour sonore"));
 		
-		
-		p2.add(new JLabel("Phase 2: balisage"));
-		p2.add(new JLabel("Déplacez le robot pour déposer"));
-		p2.add(new JLabel("une balise sur chaque zones"));
-		p2.add(new JLabel("de mauvaise condition de liaison."));
-		p2.add(nb_balise);
-		
-		p3.add(new JLabel("Phase 3: retour"));
-		p3.add(new JLabel("Déplacez le robot afin de le"));
-		p3.add(new JLabel("ramener au camp de base"));
-		p3.add(new JLabel("en suivant le chemin défini"));
-		p3.add(new JLabel("par les ligne noires."));
+		switch (terminal.phase){
+		case 1:
+			p1.setBackground(new Color(255, 255, 120));
+			lp1.setText(phase1);
+			break;
+		case 2:
+			p1.setBackground(new Color(0, 255, 120));
+			p2.setBackground(new Color(255, 255, 120));
+			break;
+		case 3:
+			p1.setBackground(new Color(0, 255, 120));
+			p2.setBackground(new Color(0, 255, 120));
+			p3.setBackground(new Color(255, 255, 120));
+			break;
+		}
 	}
 }

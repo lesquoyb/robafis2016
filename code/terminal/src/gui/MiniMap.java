@@ -10,6 +10,7 @@ import javax.swing.JPanel;
 
 import model.Terminal;
 
+@SuppressWarnings("serial")
 public class MiniMap extends JPanel{
 	HashMap<Coords, Integer> minimap = new HashMap<>();
 	Terminal terminal;
@@ -62,7 +63,7 @@ public class MiniMap extends JPanel{
 			int color = image.getRGB(imgx, imgy);
 			minimap.put(new Coords(mapx, mapy), color);
 			
-			System.out.println(mapx + " -- " + mapy);
+			//System.out.println(mapx + " -- " + mapy);
 		}
 	}
 }

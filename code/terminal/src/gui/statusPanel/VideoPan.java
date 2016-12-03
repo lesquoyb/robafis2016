@@ -4,7 +4,6 @@ import java.awt.BorderLayout;
 import java.awt.Color;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
-import java.awt.event.MouseAdapter;
 import java.util.Observer;
 
 import javax.swing.BorderFactory;
@@ -15,8 +14,8 @@ import javax.swing.JTextField;
 
 import model.Camera;
 
-public 
-class VideoPan extends JPanel implements Observer {
+@SuppressWarnings("serial")
+public class VideoPan extends JPanel implements Observer {
 	JLabel etat_video = new JLabel(StatusPanel.rouge);
 	Camera camera;
 

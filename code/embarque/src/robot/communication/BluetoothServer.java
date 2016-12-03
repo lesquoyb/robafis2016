@@ -21,8 +21,6 @@ public class BluetoothServer {
 	private Robot robot;
 	int PORT = 5000;
 
-
-
 	public BluetoothServer(Robot r) {
 		robot = r;
 		socket = null;
@@ -30,20 +28,22 @@ public class BluetoothServer {
 
 	public void ackDist(){
 		try {
-			bos.write("ok".getBytes());
+			bos = new BufferedOutputStream(connected.getOutputStream());
+			bos.write("balise:\n".getBytes());
 			bos.flush();
-		} catch (IOException e) {
+		} catch (Exception e) {
 			e.printStackTrace();
 		}
 	}
 	
-	public boolean connect(String ip) {
+	public void ackPhase1() {
 		try {
-			socket = new Socket(ip, PORT);
+			bos = new BufferedOutputStream(connected.getOutputStream());
+			bos.write("phase2:\n".getBytes());
+			bos.flush();
 		} catch (Exception e) {
-			return false;
+			e.printStackTrace();
 		}
-		return true;
 	}
 
 	public boolean stillAlive(){
@@ -54,9 +54,11 @@ public class BluetoothServer {
 	public void establishConnection(){
 
 		boolean notConnected = true;
+
 		while(notConnected){
 			try{
 				server = new ServerSocket (PORT);
+				server.setReuseAddress(true);
 				LCD.drawString("Waiting connexion ...", 0, 0);
 				connected = server.accept();
 				server.setSoTimeout(0);
@@ -77,15 +79,9 @@ public class BluetoothServer {
 		while(true){
 
 			establishConnection();
-			
+
 			String fromclient;
-			try {
-				bos = new BufferedOutputStream(connected.getOutputStream());
-				bos.write( ("ready\n").getBytes());
-				bos.flush();
-			} catch (IOException e1) {
-				e1.printStackTrace();
-			}
+
 			boolean done = false;
 			String tmp;
 			while( ! connected.isClosed()) {
@@ -114,25 +110,31 @@ public class BluetoothServer {
 						speedL = new Integer(val[0]);
 						speedR = new Integer(val[1]);
 
-						robot.motorL.setSpeed(speedL);
 						robot.motorR.setSpeed(speedR);
-
+						robot.motorL.setSpeed(speedL);
+						
 						break;
 					}
 
-					bos.flush();
+				} catch (Exception e) {
 
-				} catch (IOException e) {
-
+					robot.motorR.setSpeed(0);
+					robot.motorL.setSpeed(0);
+					
 					e.printStackTrace();
 					System.out.println(e.getMessage() + "reconnection");
+					
+					try {
+						server.close();
+					} catch (IOException e1) {}
+					
 					break;
 
 				}
 			}
 			System.out.println("connection fermée ");
+			
 		}
 
 	}
-
 }

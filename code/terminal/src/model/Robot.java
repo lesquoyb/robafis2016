@@ -9,16 +9,20 @@ public class Robot extends Observable {
 	String ip = "10.0.1.1";
 	boolean btConnected;
 	volatile boolean refreshing;
-	BluetoothManager b = new BluetoothManager();
+	Terminal terminal;
+	BluetoothManager bt;
 
-	public Robot() {
+	public Robot(Terminal terminal) {
 		btConnected = false;
 		refreshing = false;
+		
+		this.terminal = terminal;
+		bt = new BluetoothManager(terminal);
 	}
 
-	public void doMovement(Movement movement, Terminal terminal) {
+	public void doMovement(Movement movement) {
 		if (btConnected)
-			b.sendMovement(movement, terminal);
+			bt.sendMovement(movement);
 	}
 
 	public boolean isRefreshing(){
@@ -36,7 +40,7 @@ public class Robot extends Observable {
 				setChanged();
 				notifyObservers();
 
-				btConnected = b.connect(ip);
+				btConnected = bt.connect(ip);
 
 				refreshing = false;
 				setChanged();
@@ -47,7 +51,7 @@ public class Robot extends Observable {
 	}
 
 	public boolean isConnectedToBT(){
-		btConnected = b.stillAlive();
+		btConnected = bt.stillAlive();
 		return btConnected;
 	}
 
