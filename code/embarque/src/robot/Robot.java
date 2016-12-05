@@ -31,6 +31,14 @@ public class Robot {
 		distr = new Motor("C");
 		distr.reset();
 		btServer = new BluetoothServer(this);
+		
+		Timer batterie = new Timer(10000, new TimerListener() {
+			@Override
+			public void timedOut() {
+				btServer.sendBatterie();
+			}
+		});
+		batterie.start();
 	}
 
 	public void error(String message){
@@ -49,23 +57,33 @@ public class Robot {
 	}
 
 	public void listenMode(){
+		new Odometry(this);
 		btServer.listen();
 	}
 
+	Timer timer;
 	boolean dispo = true;
 	public void distribute(){
 		if(dispo){
-			Timer t = new Timer(2000, new TimerListener() {
-				@Override
-				public void timedOut() {
-					dispo = true;
-				}
-			});
-			t.start();
+			if (timer == null) {
+				timer = new Timer(2000, new TimerListener() {
+					@Override
+					public void timedOut() {
+						rstTimer();
+					}
+				});
+			}
+			
+			timer.start();
 			distr.moveDegree(360, 720);
 			btServer.ackDist();
 			dispo = false;
 		}
+	}
+	
+	void rstTimer(){
+		timer.stop();
+		dispo = true;
 	}
 
 	final int MIN_SPEED = 25;
@@ -81,7 +99,7 @@ public class Robot {
 	int basespeed = 500;
 	
 	public void followLine(){
-		int angle_end = 145;
+		int angle_end = 150;
 		int angle_after_end = 175;
 		double dist_after_end = 35;
 
@@ -96,7 +114,6 @@ public class Robot {
 		double integral = 0;
 		double derivative = 0;
 
-		int virage = 0;
 		int speed = MIN_SPEED;
 
 		gyroscope.reset();
@@ -155,7 +172,9 @@ public class Robot {
 
 		motorL.setSpeed(0);
 		motorR.setSpeed(0);
+		
 		Sound.beep();
+		btServer.ackPhase1();
 	}
 
 	public void setWheelSize(double d) {

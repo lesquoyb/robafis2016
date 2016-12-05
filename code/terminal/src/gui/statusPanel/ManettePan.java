@@ -1,17 +1,14 @@
 package gui.statusPanel;
 
 import java.awt.BorderLayout;
-import java.awt.event.ActionEvent;
-import java.awt.event.ActionListener;
-import java.awt.event.MouseAdapter;
+import java.awt.Dimension;
 
-import javax.swing.BorderFactory;
-import javax.swing.JButton;
 import javax.swing.JLabel;
 import javax.swing.JPanel;
 
 import model.Manette;
 
+@SuppressWarnings("serial")
 public class ManettePan extends JPanel{
 	
 	Manette m;
@@ -25,11 +22,13 @@ public class ManettePan extends JPanel{
 		setLayout(new BorderLayout());
 
 		etat_robot = new JLabel(StatusPanel.rouge);
-
-
-
 		add(new JLabel("Manette : "), BorderLayout.WEST);
 		add(etat_robot, BorderLayout.CENTER);
+		
+		// HACK pour aligner les voyants
+		JPanel plop = new JPanel();
+		plop.setPreferredSize(new Dimension(StatusPanel.rafraichir.getIconWidth() + 10, 20));
+		add( plop , BorderLayout.EAST);
 	}
 	
 	public void refreshView(){

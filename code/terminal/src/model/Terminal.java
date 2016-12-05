@@ -1,19 +1,25 @@
 package model;
 
-public class Terminal {
+import java.util.Observable;
+
+public class Terminal extends Observable {
 	Camera camera;
 	Robot robot;
 	public Manette manette;
 	public String message;
-	public int depose;
+	public int depose, phase;
+
+	public int batterie;
 	
-	
+	public int posx, posy, theta;
+
+
 	public Terminal() {
 		camera = new Camera();
-		robot = new Robot();
+		robot = new Robot(this);
 		manette = new Manette(robot);
 	}
-	
+
 	public void listenPad(){
 		manette.listen(this);
 	}
@@ -23,5 +29,33 @@ public class Terminal {
 
 	public Robot getRobot() {
 		return robot;
+	}
+
+	public void baliseDepose() {
+		depose++;
+		setChanged();
+		notifyObservers();
+	}
+
+	public void setPhase(int i) {
+		phase = i;
+		setChanged();
+		notifyObservers();
+	}
+
+	public void setPosition(int posX, int posY, int angle) {
+		posx = posX;
+		posy = posY;
+		theta = angle;
+		
+		System.out.println(angle);
+	}
+
+	public void setBatterie(int integer) {
+		if ( batterie != integer){
+			batterie = integer;
+			setChanged();
+			notifyObservers();
+		}
 	}
 }

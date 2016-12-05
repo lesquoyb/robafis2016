@@ -10,7 +10,7 @@ public class Camera extends Observable {
 	int height = 480;
 	
 	boolean connected = false;
-	
+	volatile boolean refreshing = false;
 
 	public boolean isConnected() {
 		return connected;
@@ -41,8 +41,21 @@ public class Camera extends Observable {
 	}
 
 	public void reconnect() {
-		setChanged();
-		notifyObservers();
+		if (refreshing) return;
+
+		Thread reco = new Thread(){
+			@Override
+			public void run() {
+				refreshing = true;
+				setChanged();
+				notifyObservers();
+				
+				refreshing = false;
+				setChanged();
+				notifyObservers();
+			}
+		};
+		reco.start();
 	}
 
 	public void setConnected(boolean co) {
@@ -52,6 +65,10 @@ public class Camera extends Observable {
 
 	public void getInstantImage() {
 		
+	}
+
+	public boolean isRefreshing() {
+		return refreshing;
 	}
 
 }
