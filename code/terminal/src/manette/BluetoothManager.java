@@ -39,7 +39,7 @@ public class BluetoothManager {
 	public void sendMovement(Movement m, Terminal terminal) {
 		if (socket != null && socket.isConnected() && !socket.isClosed()) {
 			try {
-				
+
 				socket.getOutputStream().write(m.toString().getBytes());
 				if(m.boutonA){
 					BufferedReader bufferReader = new BufferedReader(new InputStreamReader (socket.getInputStream()));

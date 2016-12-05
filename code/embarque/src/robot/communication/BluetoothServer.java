@@ -36,7 +36,7 @@ public class BluetoothServer {
 			e.printStackTrace();
 		}
 	}
-	
+
 	public boolean connect(String ip) {
 		try {
 			socket = new Socket(ip, PORT);
@@ -77,7 +77,7 @@ public class BluetoothServer {
 		while(true){
 
 			establishConnection();
-			
+
 			String fromclient;
 			try {
 				bos = new BufferedOutputStream(connected.getOutputStream());
