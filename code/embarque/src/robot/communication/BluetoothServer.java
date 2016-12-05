@@ -154,8 +154,6 @@ public class BluetoothServer {
 			String data = x_pos + ";" + y_pos + ";" + theta + "\n";
 			bos.write(data.getBytes());
 			bos.flush();
-		} catch (Exception e) {
-			e.printStackTrace();
-		}
+		} catch (Exception e) {}
 	}
 }

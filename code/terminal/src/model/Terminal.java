@@ -10,6 +10,8 @@ public class Terminal extends Observable {
 	public int depose, phase;
 
 	public int batterie;
+	
+	public int posx, posy, theta;
 
 
 	public Terminal() {
@@ -42,7 +44,11 @@ public class Terminal extends Observable {
 	}
 
 	public void setPosition(int posX, int posY, int angle) {
-		System.out.println(posX + " -- " + posY + " -- " + angle);
+		posx = posX;
+		posy = posY;
+		theta = angle;
+		
+		System.out.println(angle);
 	}
 
 	public void setBatterie(int integer) {

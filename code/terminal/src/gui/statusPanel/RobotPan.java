@@ -39,7 +39,6 @@ class RobotPan extends JPanel implements Observer{
 		timer.schedule(myTask, 0, 2000);
 
 
-
 		final JTextField ip = new JTextField();
 		ip.setText(robot.getIPBT());
 
@@ -80,7 +79,9 @@ class RobotPan extends JPanel implements Observer{
 					public void run() {
 						refresh();
 					}
-				}, 200);
+				},
+				200
+				);
 
 	}
 }

@@ -8,7 +8,7 @@ public class Odometry{
 	final static float TWO_PI = 3.1415926535f * 2;
 	final static float RAD_TO_DEG = 57.2958f;
 
-	float WHEEL_BASE = 13f; // Distance entre les roues	
+	float WHEEL_BASE = 12.5f; // Distance entre les roues	
 	
 	
 	

@@ -1,10 +1,11 @@
 package gui.statusPanel;
 
 import java.awt.BorderLayout;
-import java.awt.Color;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
 import java.util.Observer;
+import java.util.Timer;
+import java.util.TimerTask;
 
 import javax.swing.BorderFactory;
 import javax.swing.JButton;
@@ -17,24 +18,28 @@ import model.Camera;
 @SuppressWarnings("serial")
 public class VideoPan extends JPanel implements Observer {
 	JLabel etat_video = new JLabel(StatusPanel.rouge);
+	JButton refresh = new JButton(StatusPanel.rafraichir);
 	Camera camera;
 
 	public VideoPan(final Camera camera) {
 		this.camera = camera;
 		camera.addObserver(this);
-
-		setBackground(Color.LIGHT_GRAY);
 		setLayout(new BorderLayout());
 
-		if (camera.isConnected())
-			etat_video.setIcon(StatusPanel.vert);
-		else
-			etat_video.setIcon(StatusPanel.rouge);
+		Timer timer = new Timer();
+		TimerTask myTask = new TimerTask() {
+			@Override
+			public void run() {
+				refresh();
+			}
+		};
+		timer.schedule(myTask, 0, 2000);
 
+		
 		final JTextField ip = new JTextField();
 		ip.setText(camera.getIp());
 
-		final JButton refresh = new JButton(StatusPanel.rafraichir);
+		
 		refresh.setBorder(BorderFactory.createEmptyBorder());
 		refresh.setContentAreaFilled(false);
 
@@ -46,7 +51,7 @@ public class VideoPan extends JPanel implements Observer {
 			}
 		});
 
-		
+
 
 		add(new JLabel("Video : "), BorderLayout.WEST);
 		add(etat_video, BorderLayout.CENTER);
@@ -55,6 +60,11 @@ public class VideoPan extends JPanel implements Observer {
 	}
 
 	void refresh(){
+		if (camera.isRefreshing())
+			refresh.setIcon(StatusPanel.rafraichir2);
+		else
+			refresh.setIcon(StatusPanel.rafraichir);
+
 		if (camera.isConnected())
 			etat_video.setIcon(StatusPanel.vert);
 		else
