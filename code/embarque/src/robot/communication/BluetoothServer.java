@@ -38,6 +38,7 @@ public class BluetoothServer {
 	}
 	
 	public void ackPhase1() {
+
 		try {
 			bos = new BufferedOutputStream(connected.getOutputStream());
 			bos.write("phase2:\n".getBytes());
