@@ -3,6 +3,7 @@ package gui;
 import java.awt.BorderLayout;
 import java.awt.Color;
 import java.awt.Dimension;
+import java.awt.FlowLayout;
 import java.awt.GridLayout;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
@@ -21,6 +22,7 @@ import model.Terminal;
 public class MissionStatePanel extends JPanel implements Observer {
 	Terminal terminal;
 	JPanel choixm = new JPanel();
+	JPanel mission = new JPanel();
 	JPanel phases = new JPanel();
 	
 	JPanel p1 = new JPanel();
@@ -31,6 +33,8 @@ public class MissionStatePanel extends JPanel implements Observer {
 	int over;
 	
 	String press_start, phase1, phase2, phase3;
+	
+	Chrono chrono;
 
 	public MissionStatePanel(Terminal terminal) {
 		this.terminal = terminal;
@@ -38,6 +42,8 @@ public class MissionStatePanel extends JPanel implements Observer {
 		setPreferredSize(new Dimension(300, 0));
 		
 		this.setLayout(new BorderLayout());
+		
+		chrono = new Chrono();
 
 		title = new JLabel("<html><h2><center>CHOIX DE LA MISSION</center><h2></html>");
 		title.setHorizontalAlignment(SwingConstants.CENTER);
@@ -52,7 +58,12 @@ public class MissionStatePanel extends JPanel implements Observer {
 		p1.setBackground(new Color(255, 200, 200));
 		
 		choixm.setLayout(new GridLayout(3, 1));
+
+		mission.setLayout(new FlowLayout());
+		
 		phases.setLayout(new GridLayout(3, 1));
+		mission.add(chrono);
+		mission.add(phases);
 		
 		choixMission();
 		add(choixm);		
@@ -123,7 +134,8 @@ public class MissionStatePanel extends JPanel implements Observer {
 		phases.add(p2);
 		phases.add(p3);
 		
-		add(phases);
+		
+		add(mission);
 	}
 
 	public void missions(){
@@ -188,6 +200,7 @@ public class MissionStatePanel extends JPanel implements Observer {
 		
 		switch (terminal.phase){
 		case 1:
+			chrono.start();
 			p1.setBackground(new Color(255, 255, 120));
 			lp1.setText(phase1);
 			break;
@@ -200,6 +213,9 @@ public class MissionStatePanel extends JPanel implements Observer {
 			p2.setBackground(new Color(0, 255, 120));
 			p3.setBackground(new Color(255, 255, 120));
 			break;
+		case 4:
+			chrono.end();
+			p3.setBackground(new Color(0, 255, 120));
 		}
 	}
 }

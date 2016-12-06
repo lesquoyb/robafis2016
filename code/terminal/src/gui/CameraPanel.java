@@ -2,12 +2,13 @@ package gui;
 
 import java.awt.Color;
 import java.awt.Dimension;
+import java.awt.Graphics;
 import java.awt.Graphics2D;
 import java.awt.Image;
 import java.awt.image.BufferedImage;
 
 import java.io.File;
-
+import java.io.IOException;
 import java.util.Observable;
 import java.util.Observer;
 import java.util.Timer;
@@ -22,6 +23,7 @@ import com.github.sarxos.webcam.ds.ipcam.IpCamDeviceRegistry;
 import com.github.sarxos.webcam.ds.ipcam.IpCamDriver;
 import com.github.sarxos.webcam.ds.ipcam.IpCamMode;
 
+import main.Main;
 import model.Camera;
 import model.Terminal;
 
@@ -38,122 +40,97 @@ public class CameraPanel extends JPanel implements Observer, WebcamPanel.Painter
 	Webcam webcam;
 	private WebcamPanel.Painter painter = null;
 	private WebcamPanel panel = null;
-
+	
 	MiniMap minimap;
 
 	public CameraPanel(Terminal terminal) {
 		this.terminal = terminal;
 		this.camera = terminal.getCamera();
 		camera.addObserver(this);
-
-		Dimension dim = new Dimension(camera.getWidth(), camera.getHeight());
-		this.setPreferredSize(dim);
 		
 		minimap = new MiniMap(this, terminal);
 
+		/*Dimension dim = new Dimension(camera.getWidth(), camera.getHeight());
+		this.setPreferredSize(dim);
+
 		try {
 			camera.getNewNumCam();
-
 			IpCamDeviceRegistry.register("Robot" + camera.getNumCam() , "http://" + camera.getIp() + "/video", IpCamMode.PUSH);
 			camera.setConnected(true);
+
+			webcam = (Webcam) Webcam.getWebcams().get(0);
+			webcam.setViewSize(dim);
+
+			panel = new WebcamPanel(webcam);
+			panel.setFillArea(true);
+			panel.setPainter(this);
+			panel.start();
+			
+			painter = panel.getDefaultPainter();
+			add(panel);
 		} catch (Exception e) {
 			camera.setConnected(false);
-			e.printStackTrace();
-		}
+		}*/
 		
-		webcam = (Webcam) Webcam.getWebcams().get(0);
-		webcam.setViewSize(dim);
-		
-		panel = new WebcamPanel(webcam);
-		panel.setFillArea(true);
-
-		panel.setPainter(this);
-		panel.start();
-
-		painter = panel.getDefaultPainter();
-
-		add(panel);
-
-		Timer minimUpd = new Timer();
-		TimerTask task = new TimerTask() {
-			@Override
-			public void run() {
-				minimap.update();
-			}
-		};
-		minimUpd.schedule(task, 0, 500);
-
+		reconnect();
 	}
 
 	void reconnect(){
-		Webcam.setDriver(new IpCamDriver());
-
 		Dimension dim = new Dimension(camera.getWidth(), camera.getHeight());
-
-		minimap = new MiniMap(this, terminal);
+		this.setPreferredSize(dim);
 
 		try {
 			camera.getNewNumCam();
-
 			IpCamDeviceRegistry.register("Robot" + camera.getNumCam() , "http://" + camera.getIp() + "/video", IpCamMode.PUSH);
-			camera.setConnected(true);
-		} catch (Exception e) {
-			camera.setConnected(false);
-			e.printStackTrace();
-		}
 
-
-
-		if (camera.isConnected()) {
 			webcam = (Webcam) Webcam.getWebcams().get(0);
 			webcam.setViewSize(dim);
-			webcam.open();
+
+			panel = new WebcamPanel(webcam);
+			panel.setFillArea(true);
+			panel.setPainter(this);
+			panel.start();
 			
-			panel = null;
-
-			if (webcam.isOpen()) {
-				panel = new WebcamPanel(webcam);
-				panel.setFillArea(true);
-
-				panel.setPainter(this);
-				panel.start();
-
-				painter = panel.getDefaultPainter();
-
-				add(panel);
-
-				Timer minimUpd = new Timer();
-				TimerTask task = new TimerTask() {
-					@Override
-					public void run() {
-						minimap.update();
-					}
-				};
-				minimUpd.schedule(task, 0, 500);
-
-				new java.util.Timer().schedule( 
-						new java.util.TimerTask() {
-							@Override
-							public void run() {
-								update(getGraphics());
-								paint(getGraphics());
-								repaint();
-								setPreferredSize(new Dimension(camera.getWidth(), camera.getHeight()));
-							}
-						}, 
-						500
-						);
-			}
+			painter = panel.getDefaultPainter();
+			add(panel);
+			
+			Main.frame.resize(Main.frame.getPreferredSize());
+			Main.frame.repaint();
+			Main.frame.pack();
+			
+			camera.setConnected(true);			
+		} catch (Exception e) {
+			camera.setConnected(false);
 		}
-
 	}
 
 	@Override
 	public void update(Observable o, Object arg) {
+		
 		if ( panel == null)
 			reconnect();
 	}
+	
+	@Override
+	public void paint(Graphics g) {
+		// TODO Auto-generated method stub
+		super.paint(g);
+		
+		if (!camera.isConnected()) {
+			try {
+				BufferedImage plop = ImageIO.read(new File("assets/images/noFlux.png"));
+				//System.out.println(g);
+				g.drawImage(plop, 0,0, null);
+				
+			} catch (IOException ioe) {
+				// TODO Auto-generated catch block
+				ioe.printStackTrace();
+			}
+		}
+	}
 
+	int mwidth = 300;
+	int mheight = mwidth/2;
 
 	@Override
 	public void paintImage(WebcamPanel arg0, BufferedImage image, Graphics2D g2) {
@@ -162,15 +139,48 @@ public class CameraPanel extends JPanel implements Observer, WebcamPanel.Painter
 		}
 
 		g2.setColor(Color.RED);
-		g2.drawRect(800/2 - 50, 480/2 - 25, 100, 50);
-		g2.drawRect(800/2 - 49, 480/2 - 24, 98, 48);
+		g2.drawRect(450, 175, 200, 100);
+		g2.drawRect(451, 176, 198, 98);
+		g2.drawRect(452, 177, 196, 96);
+
+
 
 		g2.drawImage(getBatteryImage(), 0, 0, 100, 50, null);
 
 		BufferedImage im = minimap.getMiniMap();
 
 		if (im != null){
-			g2.drawImage(im, 800-200, 480-200, 200, 200, null);
+			int msx = 800-mwidth;
+			int msy = 480-mheight;
+
+			float rx = (float)mwidth / minimap.realMap.getWidth() ;
+			float ry = (float)mheight / minimap.realMap.getHeight();
+
+			g2.drawImage(im, msx, msy, mwidth, mheight, null);
+
+			//System.out.println(rx + " - " + ry);
+
+			int x = msx + (int)((minimap.startx + terminal.posx*10)*rx);
+			int y = msy + (int)((minimap.starty + terminal.posy*10)*ry);
+
+			g2.fillOval( msx + (int)((minimap.startx + terminal.posx*10)*rx) -10 , msy + (int)((minimap.starty + terminal.posy*10)*ry) -10, 20, 20);
+
+			g2.setColor(new Color (0, 200, 0));
+
+			for (int i = -25; i < 25; i++) {
+				g2.drawLine(x, y,
+						x + (int)(30 * Math.sin( Math.toRadians(180 + terminal.theta + i))),
+						y + (int)(30 * Math.cos( Math.toRadians(180 + terminal.theta + i)))
+						);
+			}
+			
+			g2.setColor(new Color(50, 50, 250));
+			for (java.awt.Point pt : terminal.balises) {
+				int xp = msx + (int)((minimap.startx + pt.getX()*10)*rx);
+				int yp = msy + (int)((minimap.starty + pt.getY()*10)*ry);
+				for (int i = 0; i < 5; i++)
+					g2.drawOval(xp -20 + i, yp-20 +i, 40-i*2, 40-i*2);
+			}
 		}
 	}
 

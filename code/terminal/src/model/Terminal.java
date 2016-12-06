@@ -1,5 +1,7 @@
 package model;
 
+import java.awt.Point;
+import java.util.ArrayList;
 import java.util.Observable;
 
 public class Terminal extends Observable {
@@ -8,6 +10,8 @@ public class Terminal extends Observable {
 	public Manette manette;
 	public String message;
 	public int depose, phase;
+	
+	public ArrayList<Point> balises = new ArrayList<>();
 
 	public int batterie;
 	
@@ -35,6 +39,8 @@ public class Terminal extends Observable {
 		depose++;
 		setChanged();
 		notifyObservers();
+		
+		balises.add(new Point(posx, posy));
 	}
 
 	public void setPhase(int i) {
@@ -48,7 +54,7 @@ public class Terminal extends Observable {
 		posy = posY;
 		theta = angle;
 		
-		System.out.println(angle);
+		//System.out.println(posX + " " + posY + " " + angle);
 	}
 
 	public void setBatterie(int integer) {

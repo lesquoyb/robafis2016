@@ -41,7 +41,7 @@ public class XBoxCtrlListener implements XboxControllerListener{
 
 	@Override
 	public void back(boolean pressed) {
-		
+		movement.boutonSelect = pressed;
 	}
 
 	@Override

@@ -57,7 +57,6 @@ public class Robot {
 	}
 
 	public void listenMode(){
-		new Odometry(this);
 		btServer.listen();
 	}
 
@@ -175,6 +174,8 @@ public class Robot {
 		
 		Sound.beep();
 		btServer.ackPhase1();
+		
+		new Odometry(this);
 	}
 
 	public void setWheelSize(double d) {

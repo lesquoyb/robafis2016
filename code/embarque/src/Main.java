@@ -1,3 +1,4 @@
+import robot.Odometry;
 import robot.Robot;
 
 public class Main {
@@ -18,6 +19,8 @@ public class Main {
 		robot.setMotorLeft("B");
 		robot.setMotorRight("A");
 		robot.setWheelSize(6.88);
+
+		new Odometry(robot);
 		robot.listenMode();
 		
 		//robot.followLine(700, 0, 0);

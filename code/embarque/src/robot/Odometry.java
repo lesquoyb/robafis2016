@@ -59,11 +59,14 @@ public class Odometry{
 			cm = (left_cm + right_cm) / 2f;
 
 			/* accumulate total rotation around our center */
-			theta += (left_cm - right_cm) / WHEEL_BASE;
+			/*theta += (left_cm - right_cm) / WHEEL_BASE;
 			if (theta > TWO_PI)
 				theta -= TWO_PI;
 			if (theta < 0)
 				theta += TWO_PI;
+			*/
+			
+			theta = (float) Math.toRadians(bot.gyroscope.getValue());
 
 			/* and clip the rotation to plus or minus 360 degrees */
 			//theta -= (theta / 2*Math.PI) * 2*Math.PI;

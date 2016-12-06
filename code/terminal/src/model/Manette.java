@@ -40,6 +40,8 @@ public class Manette{
 				
 				if (bbox.movement.boutonStart)
 					terminal.setPhase(1);
+				if (bbox.movement.boutonSelect)
+					terminal.setPhase(4);
 				
 				robot.doMovement( bbox.movement);
 				

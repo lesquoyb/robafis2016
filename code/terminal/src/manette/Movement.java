@@ -3,12 +3,13 @@ package manette;
 public class Movement {
 
 	private static final float ROBOT_STEERING_RATIO_LIMIT = 0.7f;
-	private static final float ROBOT_SPEED_LIMIT = 600; //valeur max d'une roue
+	private static final float ROBOT_SPEED_LIMIT = 400; //valeur max d'une roue
 	private static final float ROBOT_ROTATE_SPEED = 100;
 	
 	//Inputs Manette
 	public boolean boutonA;
 	public boolean boutonStart;
+	public boolean boutonSelect;
 	public double speed;
 	public double reverse;
 	public double direction;
@@ -22,6 +23,7 @@ public class Movement {
 	public double rightWheel;
 	
 	public String error;
+	
 	
 	
 	public void calculateWheelsSpeed(){

@@ -21,11 +21,15 @@ public class MiniMap extends JPanel{
 	CameraPanel camera;
 
 	BufferedImage buffer;
+	BufferedImage realMap;
 
 	// distance du centre de la vue a l'axe des roues
 	int distWheel = 30;
 
 	int minX, minY, maxX, maxY;
+	
+	int startx = 1350;
+	int starty = 500;
 
 	// NB cm par rapport au centre de vue de la camera / position pixel equivalent a l'ecran
 	HashMap<Point, Point> corresp = new HashMap<>();
@@ -47,10 +51,17 @@ public class MiniMap extends JPanel{
 		
 
 		addPixel(0, 0, 0);
+		
+		try {
+			realMap = ImageIO.read(new File("assets/images/map.png"));
+		} catch (IOException e) {
+			// TODO Auto-generated catch block
+			e.printStackTrace();
+		}
 	}
 
 	public void update() {
-		BufferedImage image = (BufferedImage)(camera.getImage());
+		/*BufferedImage image = (BufferedImage)(camera.getImage());
 
 		if (image == null) return;
 
@@ -65,7 +76,7 @@ public class MiniMap extends JPanel{
 		*/
 		//
 
-		double theta = Math.toRadians(terminal.theta) + 3.1415926535;
+		/*double theta = Math.toRadians(terminal.theta) + 3.1415926535;
 		int robx = terminal.posx;
 		int roby = terminal.posy;
 
@@ -101,11 +112,11 @@ public class MiniMap extends JPanel{
 
 
 		recreateImage();
-
+*/
 	}
 
 	private void recreateImage() {
-		int w = maxX - minX;
+		/*int w = maxX - minX;
 		int h = maxY - minY;
 
 		w = Math.max(w, h);
@@ -123,7 +134,9 @@ public class MiniMap extends JPanel{
 				for (int j = -w/20; j < w/20; j++)
 					img.setRGB(terminal.posx + i - minX, terminal.posy + j - minY, (new Color(200, 0, 0)).getRGB() );
 		} catch (Exception e){}	
-
+		*/
+		
+		
 		/*
 		try {
 			for (int i = 0; i < w/10; i++)
@@ -135,8 +148,36 @@ public class MiniMap extends JPanel{
 		} catch (Exception e){}	
 		 */
 
-
-		buffer = img;
+		BufferedImage result = realMap.getSubimage(0, 0, realMap.getWidth(), realMap.getHeight());
+		
+		// on repeint le vert en blanc
+		for (int x = 0; x < result.getWidth(); x++)
+			for (int y = 0; y < result.getHeight(); y++)
+				if ( result.getRGB(x, y) == (new Color(0, 255, 0)).getRGB())
+					result.setRGB(x, y, Color.WHITE.getRGB());
+		
+		// on ajoute ce que la cam a vue
+		for (Point c : minimap.keySet()) {
+			if ( realMap.getRGB(c.x + startx, c.y + starty) != (new Color(0, 255, 0)).getRGB()) {
+				result.setRGB(c.x + startx, c.y + starty, minimap.get(c));
+				//System.out.println("HERE");
+			}
+		}
+				
+		// on dessine la pos du robot
+		/*try {
+			int plop = 15;
+			for (int i = -plop; i < plop; i++)
+				for (int j = -plop; j < plop; j++) {
+					//System.out.println( (terminal.posx + i + startx)   +"." + (terminal.posy + j + starty)   +" ----- " + result.getWidth() + "x" + result.getHeight() );
+					result.setRGB(terminal.posx + i + startx, terminal.posy + j + starty, (new Color(200, 0, 0)).getRGB() );
+					
+				}
+		} catch (Exception e){ e.printStackTrace();}	
+		*/
+		
+		
+		buffer = result;
 	}
 
 	public static BufferedImage tilt(BufferedImage image, double angle, GraphicsConfiguration gc) {
@@ -154,7 +195,8 @@ public class MiniMap extends JPanel{
 	}
 
 	BufferedImage getMiniMap(){
-		return buffer;
+		return realMap;
+		//return buffer;
 	}
 
 	void addPixel(int x, int y, int color){
@@ -166,16 +208,15 @@ public class MiniMap extends JPanel{
 
 		Point coords = new Point(x, y);
 
-		if (minimap.containsKey(coords)){
-			Color oldC = new Color(minimap.get(coords));
-			Color newC = new Color(color);
-			int r = (newC.getRed() + oldC.getRed() * 9)/10;
-			int g = (newC.getGreen() + oldC.getGreen() * 9)/10;
-			int b = (newC.getBlue() + oldC.getBlue() * 9)/10;
+		Color c = new Color(color);
+		
+		if ( c.getRed() + c.getBlue() + c.getGreen() > 255 * 3 / 2 )
+			color = (Color.WHITE).getRGB();
+		else
+			color = (Color.BLACK).getRGB();
+		
 			
-			color = (new Color(r, g, b)).getRGB();
-		}
-
+		
 		minimap.put(new Point(x, y), color);
 	}
 
